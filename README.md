@@ -2,7 +2,7 @@
 
 
 ### Enlaces
-[Control de versiones]("blob/main/documents/versionado.md")
+[Control de versiones](blob/main/documents/versionado.md)
 
 
 ### Consignas de clase
