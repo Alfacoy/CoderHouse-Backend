@@ -9,3 +9,6 @@
 
 **0.3.0**
 * Se agrega una pequeña interface a la clase **Server** con la cual se hace más fácil hacer pruebas y visualizar el contenido.
+
+**0.3.1** 
+* Se agrega el script de start para que Heroku pueda levantar la aplicación en el servidor.
