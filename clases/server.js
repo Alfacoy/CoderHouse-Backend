@@ -17,10 +17,14 @@ class Server {
     
     routes() {
 
+        this.app.get('/', (req, res) => {
+            res.send(`<h1>El servidor pa...</h1><ul><li><a href="/productos">Productos</a></li><li><a href="/productoRandom">Producto Random</a></li></ul>`)
+        })
+
         this.app.get('/productos', (req, res) => {
             this.database.getAll().then( items => {
                 if (items.status === 'Error') {
-                    res.status(404).send(`<p style="font-weight: bold;">Hubo un error en la ejecución:</p><span style="color: red;">${items.message}</span>`)
+                    res.status(404).send(`<a href="/">Volver atrás</a></br></br><p style="font-weight: bold;">Hubo un error en la ejecución:</p><span style="color: red;">${items.message}</span>`)
                 }
                 res.send(items.productos)
             })
@@ -29,7 +33,7 @@ class Server {
         this.app.get('/productoRandom', (req, res) => {
             this.database.getById(RandomNumber(1, 6)).then( item => {
                 if (item.status === 'Error') {
-                    res.status(404).send(`<p style="font-weight: bold;">Hubo un error en la ejecución:</p><span style="color: red;">${item.message}</span>`)
+                    res.status(404).send(`<a href="/">Volver atrás</a></br></br><p style="font-weight: bold;">Hubo un error en la ejecución:</p><span style="color: red;">${item.message}</span>`)
                 }
                 res.send(item.producto)
             })
