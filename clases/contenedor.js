@@ -43,26 +43,26 @@ class Contenedor {
     async getById(id) {
         // Recibe un id y devuelve el objeto con ese id, o null si no está.
         try{
-            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
-            let productos = JSON.parse(res);
+            let data = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let productos = JSON.parse(data);
             let producto = productos.find(el => el.id === id) 
             if(!producto) {
                 throw new Error()
             }
-            return {status: 'Success', data: producto}
+            return {status: 'Success', producto: producto}
         }catch(err){
-            return {status: 'Error', message: 'No se encontro el producto solicitado.', error: err, data: null}
+            return {status: 'Error', message: 'No se encontro el producto solicitado.', error: err}
         }
     }
 
     async getAll() {
         // Devuelve un array con los objetos presentes en el archivo.
         try{
-            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
-            let productos = JSON.parse(res);
-            return {status: 'Success', data: productos}
+            let data = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let productos = JSON.parse(data);
+            return {status: 'Success', productos: productos}
         }catch(err){
-            return {status: 'Error', message: 'No se encontro el producto solicitado.'}
+            return {status: 'Error', message: 'No se encontraron los productos solicitados.'}
         }
     }
 

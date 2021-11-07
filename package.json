@@ -1,13 +1,13 @@
 {
   "name": "proyecto-final",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "En este repositorio voy a estar trabajando en el ecommerce que tenemos como proyecto final de cursada.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "@Alfacoy",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"

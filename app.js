@@ -1,20 +1,30 @@
-const Contenedor = require('./clases/contenedor');
-const carrito = new Contenedor('productos');
+/*=========================================*/
+/*=         SERVIDOR DE EXPRESS           =*/
+/*=========================================*/
+const Server = require('./clases/server');
+const server = new Server();
+server.listen();
+
+/*=========================================*/
+/*=         CARGAS A BASE DE DATOS        =*/
+/*=========================================*/
+//const Contenedor = require('./clases/contenedor');
+//const carrito = new Contenedor('productos');
 
 // Producto 1
 /* carrito.save(
     {
-        title: 'Escuadra', 
+        title: 'Escuadra',
         price: 123.45,
-        thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',                                 
+        thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',
     }
 )
 .then(()=>
     // Producto 2
     carrito.save(
         {
-            title: 'Calculadora', 
-            price: 234.56, 
+            title: 'Calculadora',
+            price: 234.56,
             thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png',
         }
     )
@@ -22,14 +32,14 @@ const carrito = new Contenedor('productos');
         // Producto 3
         carrito.save(
             {
-                title: 'Globo Terráqueo', 
-                price: 345.67, 
-                thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png', 
+                title: 'Globo Terráqueo',
+                price: 345.67,
+                thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png',
             }
         )
     )
-) */
-                                                                                                                         
+)  */
+
 // Producto en base al ID                                                                                                                      
 // carrito.getById(2).then(data=>console.log(data))
 // carrito.getById(152).then(data=>console.log(data))
@@ -42,7 +52,5 @@ const carrito = new Contenedor('productos');
 // carrito.getAll().then(data => console.log(data)) 
 
 // Borrar todos los productos
-//carrito.deleteAll().then(data => console.log(data)) 
-                                                                                                                             
-                                                                                                                                          
-      
+//carrito.deleteAll().then(data => console.log(data))
+
