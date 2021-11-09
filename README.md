@@ -2,7 +2,7 @@
 
 
 ### Enlaces
-[Control de versiones](/documents/versionado.md)
+[Control de versiones](https://github.com/Alfacoy/CoderHouse-Backend/blob/main/document/versionado.md)
 
 
 ### Consignas de clase
