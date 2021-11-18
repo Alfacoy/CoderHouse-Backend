@@ -4,12 +4,15 @@
   "description": "En este repositorio voy a estar trabajando en el ecommerce que tenemos como proyecto final de cursada.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "nodemon": "nodemon app.js"
   },
   "keywords": [],
   "author": "@Alfacoy",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "multer": "^1.4.3"
   }
 }

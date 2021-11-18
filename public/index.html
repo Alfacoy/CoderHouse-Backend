@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Online</title>
+</head>
+<body>
+    <h1>Servidor REST</h1>
+
+    <section>
+        <h3>Buscar producto por ID</h3>
+        <form id="productByID" name="productForm">
+            <label for="pid">ID de Producto</label>
+            <input name="pid" id="pid" required />
+            <input type="submit" value="Buscar" />
+        </form>
+    </section>
+    
+    <hr>
+
+    <section>
+        <h3>Buscar todos los productos</h3>
+        <button id="buscar">Buscar todo</button>
+    </section>
+    
+    <hr>
+
+    <section>
+        <h3>Agregar nuevo producto</h3>
+        <form id="addNewProduct">
+            <label for="title">Título</label>
+            <input name="title" id="title" required />
+            <label for="image">Imágen</label>
+            <input name="image" id="image" required />
+            <label for="price">Precio</label>
+            <input name="price" type="number" id="price" required />
+            <input type="submit" value="Agregar" />
+        </form>
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>Actualizar producto</h3>
+        <form id="updateProduct">
+            <label for="idUpdate">ID</label>
+            <input name="idUpdate" id="idUpdate" required />
+            <label for="titleUpdate">Título</label>
+            <input name="titleUpdate" id="titleUpdate" required />
+            <label for="imageUpdate">Imágen</label>
+            <input name="imageUpdate" id="imageUpdate" required />
+            <label for="priceUpdate">Precio</label>
+            <input name="priceUpdate" type="number" id="priceUpdate" required />
+            <input type="submit" value="Agregar" />
+        </form>
+    </section>
+    
+    <hr>
+
+    <section>
+        <h3>Eliminar producto específico</h3>
+        <form id="deleteProduct">
+            <label for="deleteById">ID de Producto</label>
+            <input name="deleteById" id="deleteById" required />
+            <input type="submit" value="Eliminar" />
+        </form>
+    </section>
+ 
+    <hr>
+    
+    <section>
+        <h3>LISTA DE RESULTADOS</h3>
+        <button id="limpiarRender">Limpiar pantalla</button>
+        <div id="render"></div>
+    </section>
+
+    <script type="text/javascript" src="./js/index.js"></script>
+</body>
+</html>

@@ -1,44 +1,31 @@
 const express = require('express');
-const Contenedor = require('./contenedor'); // CONTROLARDOR-DB
-const { RandomNumber } = require('../helper'); // HELPER
+const cors = require('cors');
+
+const routeProduct = require('../routes/products'); // PRODUCT-ROUTES
 
 const config = {
-    port: 8080,
-    fileName: 'productos'
+    port: 8080
 }
 
 class Server {
-    constructor(port = config.port, fileName= config.fileName) {
+    constructor(port = config.port) {
         this.app = express();
         this.PORT = process.env.PORT || port;
-        this.database = new Contenedor(fileName); // CONTROLADOR-DB
+        this.middlewares();
         this.routes();
     }
+
+    // Middlewares
+    middlewares() {
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cors());
+        this.app.use(express.static('public'));
+    }
     
+    // Methods
     routes() {
-
-        this.app.get('/', (req, res) => {
-            res.send(`<h1>El servidor pa...</h1><ul><li><a href="/productos">Productos</a></li><li><a href="/productoRandom">Producto Random</a></li></ul>`)
-        })
-
-        this.app.get('/productos', (req, res) => {
-            this.database.getAll().then( items => {
-                if (items.status === 'Error') {
-                    res.status(404).send(`<a href="/">Volver atrás</a></br></br><p style="font-weight: bold;">Hubo un error en la ejecución:</p><span style="color: red;">${items.message}</span>`)
-                }
-                res.send(items.productos)
-            })
-        })
-
-        this.app.get('/productoRandom', (req, res) => {
-            this.database.getById(RandomNumber(1, 6)).then( item => {
-                if (item.status === 'Error') {
-                    res.status(404).send(`<a href="/">Volver atrás</a></br></br><p style="font-weight: bold;">Hubo un error en la ejecución:</p><span style="color: red;">${item.message}</span>`)
-                }
-                res.send(item.producto)
-            })
-        })
-
+        this.app.use('/api/productos', routeProduct)
     }
 
     listen() {

@@ -55,6 +55,36 @@ class Contenedor {
         }
     }
 
+    async updateProduct(id, object) {
+        // Recibe el id de un producto y lo reemplaza por el nuevo producto.
+        try {
+            let data = await fs.promises.readFile(`${this.path}${this._file}`, 'utf-8');
+            let productos = JSON.parse(data);
+            let producto = productos.find(el => el.id === id)
+            if (!producto) {
+                throw new Error()
+            }
+            let productoActualizado = productos.map(item=> {
+                if (item.id === id) {
+                    item.title = object.title;
+                    item.thumbnail = object.thumbnail;
+                    item.price = object.price
+                    return item
+                } else {
+                    return item
+                }
+            })
+            try {
+                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(productoActualizado, null, 2))
+                return { status: 'Success', message: 'Producto actualizado con éxito.', id: producto.id }
+            } catch (err) {
+                return { status: 'Error', message: 'Error al cargar el producto.', error: err }
+            }
+        } catch (err) {
+            return { status: 'Error', message: 'No se encontro el producto solicitado.', error: err }
+        }
+    }
+
     async getAll() {
         // Devuelve un array con los objetos presentes en el archivo.
         try{

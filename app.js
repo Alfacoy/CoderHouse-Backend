@@ -12,7 +12,7 @@ server.listen();
 //const carrito = new Contenedor('productos');
 
 // Producto 1
-/* carrito.save(
+/*  carrito.save(
     {
         title: 'Escuadra',
         price: 123.45,
@@ -38,7 +38,7 @@ server.listen();
             }
         )
     )
-)  */
+)  
 
 // Producto en base al ID                                                                                                                      
 // carrito.getById(2).then(data=>console.log(data))
@@ -54,3 +54,12 @@ server.listen();
 // Borrar todos los productos
 //carrito.deleteAll().then(data => console.log(data))
 
+// Actualizar un producto
+/* const obj = {
+    title: 'Ropero',
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png',
+    price: 500
+}
+carrito.updateProduct(2, obj)
+    .then(item => console.log(item))
+    .catch(err => console.log(err)) */
