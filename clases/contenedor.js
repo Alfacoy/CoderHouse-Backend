@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 class Contenedor {
     constructor(file) {
@@ -14,7 +14,7 @@ class Contenedor {
             const producto = {
                 id: productos[productos.length-1].id + 1,
                 title: object.title,
-                price: object.price,
+                price: parseInt(object.price),
                 thumbnail: object.thumbnail
             }
             productos.push(producto); 
@@ -28,7 +28,7 @@ class Contenedor {
             const producto = {
                 id: 1,
                 title: object.title,
-                price: object.price,
+                price: parseInt(object.price),
                 thumbnail: object.thumbnail
             }
             try {
@@ -68,7 +68,7 @@ class Contenedor {
                 if (item.id === id) {
                     item.title = object.title;
                     item.thumbnail = object.thumbnail;
-                    item.price = object.price
+                    item.price = parseInt(object.price)
                     return item
                 } else {
                     return item
@@ -128,6 +128,6 @@ class Contenedor {
     }
 }
 
-module.exports = Contenedor;
+export default Contenedor;
 
 

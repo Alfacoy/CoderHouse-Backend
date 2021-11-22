@@ -1,4 +1,4 @@
-const path = 'http://localhost:8080/api/productos/';
+/* const path = 'http://localhost:8080/api/productos/';
 
 // ELEMENTS
 const buscar = document.querySelector('#buscar');
@@ -118,7 +118,51 @@ buscar.addEventListener('click', (event) => {
             render.appendChild(card);
         })
         )
+}) */
+
+
+
+
+
+
+document.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = document.querySelector('#formAddProduct');
+    const data = new FormData(form);
+    const obj = {
+        title: data.get('title'),
+        price: data.get('price'),
+        thumbnail: data.get('thumbnail')
+    }
+    fetch('/api/productos/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+    })
+        .then(res => res.json())
+        .then(data => {
+
+            console.log(data)
+            location.href="/"
+        })
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // FUNCTIONS
 const createCard = (title, thumbnail, price) => {

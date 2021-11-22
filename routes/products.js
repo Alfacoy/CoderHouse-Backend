@@ -1,20 +1,25 @@
-const { Router } = require('express');
-const router = Router();
+import { Router } from 'express';
+import Contenedor from '../clases/contenedor.js'; // CONTROLARDOR-DB
 
-const Contenedor = require('../clases/contenedor'); // CONTROLARDOR-DB
+const routerAPI = Router();
+const routerVIEW = Router();
 const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
 
+/*=========================================*/
+/*=                  API                  =*/
+/*=========================================*/
+
 // GET
-router.get('/', (req,res) => {
+routerAPI.get('/', (req,res) => {
     database.getAll().then(items => {
         if (items.status === 'Error') {
             res.status(404).send(items.message);
         }
         res.send(items.productos)
-    })
+    }) 
 })
 
-router.get('/:pid', (req, res) => {
+routerAPI.get('/:pid', (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     database.getById(pid).then(item => {
@@ -26,7 +31,7 @@ router.get('/:pid', (req, res) => {
 })
 
 // POST
-router.post('/', (req, res) => {
+routerAPI.post('/', (req, res) => {
     let { title, thumbnail, price } = req.body;
     const product = {
         title,
@@ -43,7 +48,7 @@ router.post('/', (req, res) => {
 })
 
 // PUT
-router.put('/:pid', (req, res) => {
+routerAPI.put('/:pid', (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     let obj = req.body;
@@ -56,7 +61,7 @@ router.put('/:pid', (req, res) => {
 })
 
 // DELETE
-router.delete('/:pid', (req, res) => {
+routerAPI.delete('/:pid', (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     database.deleteById(pid)
@@ -71,4 +76,24 @@ router.delete('/:pid', (req, res) => {
         })
 })
 
-module.exports = router;
+/*=========================================*/
+/*=                  VIEW                 =*/
+/*=========================================*/
+
+// GET
+routerVIEW.get('/', (req, res) => {
+    database.getAll().then(items => {
+        if (items.status === 'Error') {
+            res.status(404).send(items.message);
+        }
+        let obj = {
+            productos: items.productos
+        }
+        res.render('Home', obj);
+    })
+})
+
+export {
+    routerAPI,
+    routerVIEW
+}

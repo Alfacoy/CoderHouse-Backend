@@ -1,15 +1,17 @@
 /*=========================================*/
 /*=         SERVIDOR DE EXPRESS           =*/
 /*=========================================*/
-const Server = require('./clases/server');
+import Server from "./clases/server.js";
 const server = new Server();
+//const server = new Server(8080,'pug');
+//const server = new Server(8080,'ejs');
 server.listen();
 
 /*=========================================*/
 /*=         CARGAS A BASE DE DATOS        =*/
 /*=========================================*/
 //const Contenedor = require('./clases/contenedor');
-//const carrito = new Contenedor('productos');
+//const carrito = new Contenedor('productos'); 
 
 // Producto 1
 /*  carrito.save(

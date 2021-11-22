@@ -1,18 +1,22 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import { engine } from 'express-handlebars';
 
-const routeProduct = require('../routes/products'); // PRODUCT-ROUTES
+import { routerAPI, routerVIEW } from '../routes/products.js' // PRODUCT-ROUTES
 
 const config = {
-    port: 8080
+    port: 8080,
+    engine: 'handlebars'
 }
 
 class Server {
-    constructor(port = config.port) {
+    constructor(port = config.port, engine = config.engine) {
         this.app = express();
         this.PORT = process.env.PORT || port;
+        this.ifEngine = engine; 
         this.middlewares();
         this.routes();
+        this.engines();
     }
 
     // Middlewares
@@ -22,10 +26,22 @@ class Server {
         this.app.use(cors());
         this.app.use(express.static('public'));
     }
-    
-    // Methods
+
+
+    // Routes
     routes() {
-        this.app.use('/api/productos', routeProduct)
+        this.app.use('/api/productos', routerAPI);
+        this.app.use('/view/productos', routerVIEW);
+        this.app.use('/', (req,res) => res.render('Form'))
+    }
+
+    // Engines
+    engines() {
+        if (this.ifEngine === 'handlebars') {
+            this.app.engine('handlebars', engine());
+        }
+        this.app.set('views', './views');
+        this.app.set('view engine', this.ifEngine);
     }
 
     listen() {
@@ -33,6 +49,4 @@ class Server {
     }
 }
 
-module.exports = Server;
-
-
+export default Server;

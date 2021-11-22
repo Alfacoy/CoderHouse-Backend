@@ -1,18 +1,17 @@
-### Formato: 
-link a un repositorio en Github y url de proyecto subido a glitch
+###   Consigna: 
+Implementar programa que contenga una clase llamada Contenedor que reciba el nombre del archivo con el que va a trabajar e implemente los siguientes métodos:
 
-### Observación:
-no incluir la carpeta node_modules
+* save(Object): Number - Recibe un objeto, lo guarda en el archivo, devuelve el id asignado.
+* getById(Number): Object - Recibe un id y devuelve el objeto con ese id, o null si no está.
+* getAll(): Object[] - Devuelve un array con los objetos presentes en el archivo.
+* deleteById(Number): void - Elimina del archivo el objeto con el id buscado.
+* deleteAll(): void - Elimina todos los objetos presentes en el archivo.
 
-### Consigna:
-1) Realizar un proyecto de servidor basado en node.js que utilice el módulo express e
-implemente los siguientes endpoints en el puerto 8080:
-* Ruta get '/productos' que devuelva un array con todos los productos disponibles
-en el servidor
-* Ruta get '/productoRandom' que devuelva un producto elegido al azar entre todos
-los productos disponibles
+### Aspectos a incluir en el entregable: 
+El método save incorporará al producto un id numérico, que deberá ser siempre uno más que el id del último objeto agregado (o id 1 si es el primer objeto que se agrega) y no puede estar repetido.
 
-2) Incluir un archivo de texto 'productos.txt' y utilizar la clase Contenedor del desafío
-anterior para acceder a los datos persistidos del servidor.
-Antes de iniciar el servidor, colocar en el archivo 'productos.txt' tres productos como en el
-ejemplo del desafío anterior.
+Tomar en consideración el contenido previo del archivo, en caso de utilizar uno existente.
+Implementar el manejo de archivos con el módulo fs de node.js, utilizando promesas con async/await y manejo de errores.
+
+Probar el módulo creando un contenedor de productos, que se guarde en el archivo: “productos.txt”
+Incluir un llamado de prueba a cada método, y mostrando por pantalla según corresponda para verificar el correcto funcionamiento del módulo construído. 
