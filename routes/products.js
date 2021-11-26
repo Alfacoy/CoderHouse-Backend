@@ -93,6 +93,10 @@ routerVIEW.get('/', (req, res) => {
     })
 })
 
+routerVIEW.get('/chat', (req, res) => {
+    res.render('Chat');
+})
+
 export {
     routerAPI,
     routerVIEW

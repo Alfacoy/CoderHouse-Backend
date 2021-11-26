@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import { engine } from 'express-handlebars';
 
+
 import { routerAPI, routerVIEW } from '../routes/products.js' // PRODUCT-ROUTES
+import Socket from './socket.js'
 
 const config = {
     port: 8080,
@@ -13,7 +15,7 @@ class Server {
     constructor(port = config.port, engine = config.engine) {
         this.app = express();
         this.PORT = process.env.PORT || port;
-        this.ifEngine = engine; 
+        this.ifEngine = engine;
         this.middlewares();
         this.routes();
         this.engines();
@@ -27,12 +29,11 @@ class Server {
         this.app.use(express.static('public'));
     }
 
-
     // Routes
     routes() {
         this.app.use('/api/productos', routerAPI);
         this.app.use('/view/productos', routerVIEW);
-        this.app.use('/', (req,res) => res.render('Form'))
+        this.app.use('/', (req, res) => res.render('Form'))
     }
 
     // Engines
@@ -45,7 +46,9 @@ class Server {
     }
 
     listen() {
-        this.app.listen(this.PORT, () => console.log(`Servidor escuchando en el puerto: http://localhost:${this.PORT}`))
+        const server = this.app.listen(this.PORT, () => console.log(`Servidor escuchando en el puerto: http://localhost:${this.PORT}`))
+        const io = new Socket(server);
+        return io
     }
 }
 
