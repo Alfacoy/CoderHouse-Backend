@@ -1,9 +1,12 @@
 import { Router } from 'express';
-import Contenedor from '../clases/contenedor.js'; // CONTROLARDOR-DB
+import Contenedor from '../clases/databaseFS.js'; // CONTROLARDOR-DB
 
 const routerAPI = Router();
 const routerVIEW = Router();
 const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
+
+
+
 
 /*=========================================*/
 /*=                  API                  =*/
@@ -81,7 +84,7 @@ routerAPI.delete('/:pid', (req, res) => {
 /*=========================================*/
 
 // GET
-routerVIEW.get('/', (req, res) => {
+/* routerVIEW.get('/', (req, res) => {
     database.getAll().then(items => {
         if (items.status === 'Error') {
             res.status(404).send(items.message);
@@ -95,7 +98,7 @@ routerVIEW.get('/', (req, res) => {
 
 routerVIEW.get('/chat', (req, res) => {
     res.render('Chat');
-})
+}) */
 
 export {
     routerAPI,
