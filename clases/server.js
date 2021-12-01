@@ -15,10 +15,13 @@ class Server {
     constructor(port = config.port) {
         this.app = express();
         this.PORT = process.env.PORT || port;
+        this.server = this.app.listen(this.PORT, () => console.log(`Servidor escuchando en el puerto: http://localhost:${this.PORT}`));
+        this.socket = new Socket(this.server);
         this.middlewares();
         this.routes();
         this.engines();
     }
+
 
     // MIDDLEWARES-1
     middlewares() {
@@ -26,6 +29,10 @@ class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
+        this.app.use((req, res, next) => {
+            req.io = this.socket;
+            next()
+        })
     }
 
     // ROUTES-2
@@ -43,9 +50,7 @@ class Server {
     
     // LISTENER-4
     listen() {
-        const server = this.app.listen(this.PORT, () => console.log(`Servidor escuchando en el puerto: http://localhost:${this.PORT}`))
-        const io = new Socket(server);
-        return io
+        this.socket;
     }
 }
 

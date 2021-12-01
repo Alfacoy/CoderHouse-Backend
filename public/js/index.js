@@ -80,9 +80,7 @@ document.addEventListener('submit', (event) => {
     })
         .then(res => res.json())
         .then(data => {
-
-            console.log(data)
-            location.href="/"
+           /*  location.href="/" */
         })
 })
 /*=========================================*/

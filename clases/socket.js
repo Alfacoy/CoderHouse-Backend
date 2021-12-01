@@ -21,10 +21,7 @@ class Socket {
 
                 let mensajes = await getAllMessage();
                 socket.emit('updateChat', mensajes)
-                
-
-
-
+            
                 socket.on('webChat', (msg) => {
                     try {
                         const obj = {

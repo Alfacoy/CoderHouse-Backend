@@ -13,7 +13,7 @@ const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
 /*=========================================*/
 
 // GET
-routerAPI.get('/', (req,res) => {
+routerAPI.get('/', (req, res) => {
     database.getAll().then(items => {
         if (items.status === 'Error') {
             res.status(404).send(items.message);
@@ -46,6 +46,12 @@ routerAPI.post('/', (req, res) => {
             res.status(404).send(item.message);
         }
         res.send(item) // ERR_HTTP_INVALID_STATUS_CODE al enviar item.id
+        
+        database.getAll().then(items => {
+            if (items.status === 'Success') {
+                req.io.io.emit('updateProducts', items);
+            }
+        })
     })
 
 })
