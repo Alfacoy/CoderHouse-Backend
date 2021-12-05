@@ -23,7 +23,7 @@ socket.on('updateProducts', data => {
 // SOCKET PARA WEB CHAT
 socket.on('updateChat', data => {
     const chatBox = document.querySelector('#chatBox');
-    const messages = data.messages;
+    const messages = data.productos; // MODIFICAR LOS MENSAJES EN DATABASEFS
     if (messages) {
         messages.map(item => {
             chatBox.appendChild(addMessageChat(item.user, formatDate(item.date),item.message))
