@@ -45,13 +45,12 @@ routerAPI.post('/', (req, res) => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
-        res.send(item) // ERR_HTTP_INVALID_STATUS_CODE al enviar item.id
-        
         database.getAll().then(items => {
             if (items.status === 'Success') {
                 req.io.io.emit('updateProducts', items);
             }
         })
+        res.send(item) // ERR_HTTP_INVALID_STATUS_CODE al enviar item.id
     })
 
 })
@@ -61,7 +60,7 @@ routerAPI.put('/:pid', (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     let obj = req.body;
-    database.updateProduct(pid, obj).then(item => {
+    database.update(pid, obj).then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }

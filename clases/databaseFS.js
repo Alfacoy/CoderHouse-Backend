@@ -1,39 +1,37 @@
 import fs from 'fs';
 
 class Contenedor {
-    constructor(file) {
+    constructor(fileName) {
         this.path = './files/';
-        this._file = `${file}.txt`;
+        this._file = `${fileName}.txt`;
     }
 
     async save(object){
         // Recibe un objeto, lo guarda en el archivo, devuelve el id asignado.
         try {
-            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
-            let productos = JSON.parse(res);
-            const producto = {
-                id: productos[productos.length-1].id + 1,
-                title: object.title,
-                price: parseInt(object.price),
-                thumbnail: object.thumbnail
+            let res = await fs.promises.readFile(`${this.path}${this._file}`, 'utf-8');
+            let content = JSON.parse(res);
+            const newElement = {
+                id: content[content.length - 1].id + 1,
+                ...object
             }
-            productos.push(producto); 
+            content.push(newElement);
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`,JSON.stringify(productos,null,2))
-                return {status: 'Success', message: 'Producto creado con éxito.', id: producto.id }
+                await fs.promises.writeFile(`${this.path}${this._file}`,JSON.stringify(content,null,2))
+                return { status: 'Success', message: 'Producto creado con éxito.', id: newElement.id }
             }catch(err) {
                 return {status: 'Error', message: 'Error al cargar el producto.', error: err}
             }
         }catch(err) {
-            const producto = {
-                id: 1,
-                title: object.title,
-                price: parseInt(object.price),
-                thumbnail: object.thumbnail
-            }
+            const newElement = [
+                {
+                    id: 1,
+                    ...object
+                }
+            ]
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`,JSON.stringify([producto],null,2))
-                return {status: 'Success', message: 'Archivo y producto creado con éxito.', id: producto.id}
+                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(newElement,null,2))
+                return { status: 'Success', message: 'Archivo y producto creado con éxito.', id: newElement.id}
             } catch (err) {
                 return {status: 'Error', message: 'Error al crear el archivo y producto.', error: err}
             }
@@ -43,40 +41,41 @@ class Contenedor {
     async getById(id) {
         // Recibe un id y devuelve el objeto con ese id, o null si no está.
         try{
-            let data = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
-            let productos = JSON.parse(data);
-            let producto = productos.find(el => el.id === id) 
-            if(!producto) {
+            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let content = JSON.parse(res);
+            let findElement = content.find(el => el.id === id) 
+            if (!findElement) {
                 throw new Error()
             }
-            return {status: 'Success', producto: producto}
+            return { status: 'Success', producto: findElement}
         }catch(err){
             return {status: 'Error', message: 'No se encontro el producto solicitado.', error: err}
         }
     }
 
-    async updateProduct(id, object) {
-        // Recibe el id de un producto y lo reemplaza por el nuevo producto.
+    async update(id, object) {
+        // Recibe un id de contenido y lo reemplaza por uno nuevo.
         try {
-            let data = await fs.promises.readFile(`${this.path}${this._file}`, 'utf-8');
-            let productos = JSON.parse(data);
-            let producto = productos.find(el => el.id === id)
-            if (!producto) {
+            let res = await fs.promises.readFile(`${this.path}${this._file}`, 'utf-8');
+            let content = JSON.parse(res);
+            let findElement = content.find(el => el.id === id)
+            if (!findElement) {
                 throw new Error()
             }
-            let productoActualizado = productos.map(item=> {
+            let updateElement = content.map(item=> {
                 if (item.id === id) {
-                    item.title = object.title;
-                    item.thumbnail = object.thumbnail;
-                    item.price = parseInt(object.price)
-                    return item
+                    const pushElement = {
+                        id: item.id,
+                        ...object
+                    }
+                    return pushElement
                 } else {
                     return item
                 }
             })
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(productoActualizado, null, 2))
-                return { status: 'Success', message: 'Producto actualizado con éxito.', id: producto.id }
+                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(updateElement, null, 2))
+                return { status: 'Success', message: 'Producto actualizado con éxito.', id: findElement.id }
             } catch (err) {
                 return { status: 'Error', message: 'Error al cargar el producto.', error: err }
             }
@@ -88,9 +87,9 @@ class Contenedor {
     async getAll() {
         // Devuelve un array con los objetos presentes en el archivo.
         try{
-            let data = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
-            let productos = JSON.parse(data);
-            return {status: 'Success', productos: productos}
+            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let content = JSON.parse(res);
+            return {status: 'Success', productos: content}
         }catch(err){
             return {status: 'Error', message: 'No se encontraron los productos solicitados.'}
         }
@@ -100,14 +99,14 @@ class Contenedor {
         // Elimina del archivo el objeto con el id buscado.
         try{
             let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
-            let productos = JSON.parse(res);
-            let siExiste = productos.find(el=>el.id === id)
-            if(!siExiste){
+            let content = JSON.parse(res);
+            let findElement = content.find(el=>el.id === id)
+            if(!findElement){
                 throw new Error();
             }
-            let productosActualizados = productos.filter(el=>el.id !== id);
+            let excludedElement = content.filter(el=>el.id !== id);
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`,JSON.stringify(productosActualizados,null,2))
+                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(excludedElement,null,2))
                 return {status: 'Success', message: 'Producto eliminado con éxito.'}
             }catch(err){
                 return {status: 'Error', message: 'Hubo un problema al borrar el producto.'}
