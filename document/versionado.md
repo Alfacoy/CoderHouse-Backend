@@ -35,3 +35,6 @@ puede guardar productos, sino que también mensajes de chat, logs de servidor, e
 * Se elimina código fuera de uso en la clase **Socket**.
 * Se mueve todo el proyecto a una carpeta SRC. 
 * Se arreglan rutas en **Contenedor** y **Server** debido a la migración que se hace a la carpeta SRC. (Hay un error conocido acá)
+
+**0.6.2** [05/12/2021]
+* Se modifica el README.

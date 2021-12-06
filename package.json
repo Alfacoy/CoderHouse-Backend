@@ -1,6 +1,6 @@
 {
   "name": "proyecto-final",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "En este repositorio voy a estar trabajando en el ecommerce que tenemos como proyecto final de cursada.",
   "main": "./src/app.js",
   "type": "module",
