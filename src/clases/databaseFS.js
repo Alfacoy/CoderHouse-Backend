@@ -1,9 +1,13 @@
 import fs from 'fs';
+import { resolve } from 'path';
+
+import { messageDefaultContenedor } from '../helper/statusMessage.js';
 
 class Contenedor {
     constructor(fileName) {
-        this.path = './files/';
+        this.path = `${resolve('src')}/files/`; // Arreglar Ruta
         this._file = `${fileName}.txt`;
+        this.status = messageDefaultContenedor;
     }
 
     async save(object){
@@ -18,9 +22,9 @@ class Contenedor {
             content.push(newElement);
             try {
                 await fs.promises.writeFile(`${this.path}${this._file}`,JSON.stringify(content,null,2))
-                return { status: 'Success', message: 'Producto creado con éxito.', id: newElement.id }
+                return { status: 'Success', message: this.status.save.success.message, id: newElement.id }
             }catch(err) {
-                return {status: 'Error', message: 'Error al cargar el producto.', error: err}
+                return { status: 'Error', message: this.status.save.error.message, error: err}
             }
         }catch(err) {
             const newElement = [
@@ -31,9 +35,9 @@ class Contenedor {
             ]
             try {
                 await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(newElement,null,2))
-                return { status: 'Success', message: 'Archivo y producto creado con éxito.', id: newElement.id}
+                return { status: 'Success', message: this.status.save.success.message, id: newElement.id}
             } catch (err) {
-                return {status: 'Error', message: 'Error al crear el archivo y producto.', error: err}
+                return { status: 'Error', message: this.status.save.error.message, error: err}
             }
         }
     }
@@ -47,9 +51,9 @@ class Contenedor {
             if (!findElement) {
                 throw new Error()
             }
-            return { status: 'Success', producto: findElement}
+            return { status: 'Success', message: this.status.getById.success.message, payload: findElement}
         }catch(err){
-            return {status: 'Error', message: 'No se encontro el producto solicitado.', error: err}
+            return { status: 'Error', message: this.status.getById.error.message, error: err}
         }
     }
 
@@ -75,12 +79,12 @@ class Contenedor {
             })
             try {
                 await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(updateElement, null, 2))
-                return { status: 'Success', message: 'Producto actualizado con éxito.', id: findElement.id }
+                return { status: 'Success', message: this.status.update.success.message, id: findElement.id }
             } catch (err) {
-                return { status: 'Error', message: 'Error al cargar el producto.', error: err }
+                return { status: 'Error', message: this.status.update.error.message, error: err }
             }
         } catch (err) {
-            return { status: 'Error', message: 'No se encontro el producto solicitado.', error: err }
+            return { status: 'Error', message: this.status.getById.error.message, error: err }
         }
     }
 
@@ -89,9 +93,9 @@ class Contenedor {
         try{
             let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
             let content = JSON.parse(res);
-            return {status: 'Success', productos: content}
+            return {status: 'Success', message: this.status.getAll.success.message, payload: content}
         }catch(err){
-            return {status: 'Error', message: 'No se encontraron los productos solicitados.'}
+            return { status: 'Error', message: this.status.getAll.error.message}
         }
     }
 
@@ -107,12 +111,12 @@ class Contenedor {
             let excludedElement = content.filter(el=>el.id !== id);
             try {
                 await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(excludedElement,null,2))
-                return {status: 'Success', message: 'Producto eliminado con éxito.'}
+                return { status: 'Success', message: this.status.deleteById.success.message}
             }catch(err){
-                return {status: 'Error', message: 'Hubo un problema al borrar el producto.'}
+                return { status: 'Error', message: this.status.deleteById.error.message}
             } 
         }catch(err){
-            return {status: 'Error', message: 'No se encontro el producto solicitado.'}
+            return { status: 'Error', message: this.status.getById.error.message}
         }
     }
 
@@ -120,9 +124,9 @@ class Contenedor {
         // Elimina todos los objetos presentes en el archivo..
         try{
             await fs.promises.unlink(`${this.path}${this._file}`);
-            return {status: 'Success', message: 'Se eliminaron todos los objetos del archivo.'}
+            return { status: 'Success', message: this.status.deleteAll.success.message}
         }catch(err){
-            return {status: 'Error', message: 'Hubo un error al intentar borrar los archivos.', error: err}
+            return { status: 'Error', message: this.status.deleteAll.error.message, error: err}
         }
     }
 }

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "timestamp": 1638746846650,
+    "productos": [
+      {
+        "id": 1,
+        "title": "Hola Mundoo344",
+        "thumbnail": "imagen.pjg",
+        "price": 14
+      },
+      {
+        "id": 3,
+        "title": "Hola Mundoo344",
+        "thumbnail": "imagen.pjg",
+        "price": 14
+      },
+      {
+        "id": 4,
+        "title": "Hola Mundoo344",
+        "thumbnail": "imagen.pjg",
+        "price": 14
+      }
+    ]
+  }
+]

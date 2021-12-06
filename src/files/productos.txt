@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "title": "Hola Mundo",
+    "thumbnail": "imagen.pjg",
+    "price": 14
+  }
+]

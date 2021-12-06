@@ -1,11 +1,11 @@
 {
   "name": "proyecto-final",
-  "version": "0.2.0",
+  "version": "0.6.1",
   "description": "En este repositorio voy a estar trabajando en el ecommerce que tenemos como proyecto final de cursada.",
-  "main": "app.js",
+  "main": "./src/app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "node ./src/app.js",
     "nodemon": "nodemon app.js"
   },
   "keywords": [],

@@ -7,7 +7,7 @@ const chatButton = document.querySelector('#chatButton');
 // SOCKET PARA PRODUCTOS
 socket.on('updateProducts', data => {
     const listOfProducts = document.querySelector('#listOfProducts');
-    let productos = data.productos;
+    let productos = data.payload;
     fetch('templates/Productos.handlebars')
         .then(res => res.text())
         .then(template => {
@@ -23,7 +23,7 @@ socket.on('updateProducts', data => {
 // SOCKET PARA WEB CHAT
 socket.on('updateChat', data => {
     const chatBox = document.querySelector('#chatBox');
-    const messages = data.productos; // MODIFICAR LOS MENSAJES EN DATABASEFS
+    const messages = data.payload; // MODIFICAR LOS MENSAJES EN DATABASEFS
     if (messages) {
         messages.map(item => {
             chatBox.appendChild(addMessageChat(item.user, formatDate(item.date),item.message))

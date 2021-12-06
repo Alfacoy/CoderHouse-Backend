@@ -1,40 +1,39 @@
 import { Router } from 'express';
+
 import Contenedor from '../clases/databaseFS.js'; // CONTROLARDOR-DB
+import { middlewareAuth } from '../helper/middlewares.js'; 
 
-const routerAPI = Router();
-const routerVIEW = Router();
+const APIProducts = Router();
+//const routerVIEW = Router();
 const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
-
-
-
 
 /*=========================================*/
 /*=                  API                  =*/
 /*=========================================*/
 
 // GET
-routerAPI.get('/', (req, res) => {
+APIProducts.get('/', (req, res) => {
     database.getAll().then(items => {
         if (items.status === 'Error') {
             res.status(404).send(items.message);
         }
-        res.send(items.productos)
+        res.send(items.payload)
     }) 
 })
 
-routerAPI.get('/:pid', (req, res) => {
+APIProducts.get('/:pid', (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     database.getById(pid).then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
-        res.send(item.producto)
+        res.send(item.payload)
     })
 })
 
 // POST
-routerAPI.post('/', (req, res) => {
+APIProducts.post('/', middlewareAuth ,(req, res) => {
     let { title, thumbnail, price } = req.body;
     const product = {
         title,
@@ -56,7 +55,7 @@ routerAPI.post('/', (req, res) => {
 })
 
 // PUT
-routerAPI.put('/:pid', (req, res) => {
+APIProducts.put('/:pid', middlewareAuth, (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     let obj = req.body;
@@ -69,7 +68,7 @@ routerAPI.put('/:pid', (req, res) => {
 })
 
 // DELETE
-routerAPI.delete('/:pid', (req, res) => {
+APIProducts.delete('/:pid', middlewareAuth, (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     database.deleteById(pid)
@@ -106,6 +105,6 @@ routerVIEW.get('/chat', (req, res) => {
 }) */
 
 export {
-    routerAPI,
-    routerVIEW
+    APIProducts,
+   // routerVIEW
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "user": "briandurand1990@gmail.com",
+    "message": "Hola!",
+    "date": "Tue Nov 30 2021 23:24:21 GMT-0300 (hora estándar de Argentina)"
+  },
+  {
+    "id": 2,
+    "user": "briandurand1990@gmail.com",
+    "message": "test",
+    "date": "Sun Dec 05 2021 13:22:15 GMT-0300 (hora estándar de Argentina)"
+  },
+  {
+    "id": 3,
+    "user": "briandurand1990@gmail.com",
+    "message": "Hola Brother!",
+    "date": "Sun Dec 05 2021 19:36:15 GMT-0300 (hora estándar de Argentina)"
+  }
+]
