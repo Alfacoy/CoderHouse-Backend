@@ -35,7 +35,7 @@ class Contenedor {
             ]
             try {
                 await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(newElement,null,2))
-                return { status: 'Success', message: this.status.save.success.message, id: newElement.id}
+                return { status: 'Success', message: this.status.save.success.message, id: newElement[0].id}
             } catch (err) {
                 return { status: 'Error', message: this.status.save.error.message, error: err}
             }

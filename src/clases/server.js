@@ -3,23 +3,25 @@ import cors from 'cors';
 import { engine } from 'express-handlebars';
 import { resolve } from 'path';
 
-// OWN-IMPORTS
-import { APIProducts, /* routerVIEW */ } from '../routes/products.js'; // PRODUCT-ROUTES
+// ROUTES
+import APIProducts from '../routes/products.js'; 
 import APICart from '../routes/cart.js';
+
 import Socket from './socket.js';
 
 // INITIAL CONFIG
 const config = {
-    port: 8080
+    port: 8080,
+    admin: true
 }
 
 class Server {
-    constructor(port = config.port) {
+    constructor(port = config.port, admin = config.admin) {
         this.app = express();
         this.PORT = process.env.PORT || port;
         this.server = this.app.listen(this.PORT, () => console.log(`Servidor escuchando en el puerto: http://localhost:${this.PORT}`));
         this.socket = new Socket(this.server);
-        this.admin = false;
+        this.admin = admin;
         this.middlewares();
         this.routes();
         this.engines();
@@ -38,16 +40,17 @@ class Server {
             next()
         })
     }
-
+    
     // ROUTES-2
     routes() {
         this.app.use('/api/productos', APIProducts);
         this.app.use('/api/carrito', APICart);
-        //this.app.use('/view/productos', routerVIEW);
-        this.app.use('/*', (req, res) => res.send({
-            error: -2,
-            descripcion: `La ruta '${req.baseUrl}' con el método [${req.method}] no existe.`
-        }))
+        this.app.use('/*', (req, res) => {
+            res.send({
+                error: -2,
+                descripcion: `La ruta '${req.baseUrl}' con el método [${req.method}] no existe.`
+            })
+        })
     }
 
     // ENGINES-3

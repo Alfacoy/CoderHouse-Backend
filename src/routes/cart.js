@@ -4,6 +4,7 @@ import Contenedor from '../clases/databaseFS.js'; // CONTROLARDOR-DB
 
 const APICart = Router();
 const database = new Contenedor('carrito'); // INSTANCIA-CONTROLADOR-DB
+const databasePROD = new Contenedor('productos');
 
 /*=========================================*/
 /*=                  API                  =*/
@@ -17,8 +18,9 @@ APICart.get('/:id/productos', (req, res) => {
     database.getById(id).then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
+        } else {
+            res.send(item.payload.productos)
         }
-        res.send(item.payload.productos)
     })
 })
 
@@ -33,31 +35,38 @@ APICart.post('/', (req, res) => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
-        res.send(item) // ERR_HTTP_INVALID_STATUS_CODE al enviar item.id
+        res.send(JSON.stringify(item.id))
     })
 })
 
 APICart.post('/:id/productos', (req, res) => {
     // Agrega productos al carrito según su ID
-    let { id } = req.params;
-    id = parseInt(id);
-    database.getById(id).then(item => {
-        if (item.status === 'Error') {
-            res.status(404).send(item.message);
+    const { id } = req.params;
+    const { pid } = req.body;
+    database.getById(parseInt(id)).then(e => {
+        if (e.status === 'Error') {
+            res.status(404).send(e.message);
+        } else {
+            const products = e.payload.productos
+            databasePROD.getById(parseInt(pid)).then(el => {
+                if (el.status === 'Error') {
+                    res.status(404).send(el.message);
+                } else {
+                    products.push(pid)
+                    const obj = {
+                        id: e.payload.id,
+                        timestamp: e.payload.timestamp,
+                        productos: products
+                    };
+                    database.update(parseInt(id), obj).then(ele => {
+                        if (ele.status === 'Error') {
+                            res.status(404).send(ele.message);
+                        }
+                        res.send(ele.message)
+                    })
+                }
+            })
         }
-        let products = item.payload.productos
-        products.push(req.body)
-        let obj = {
-            id: item.payload.id,
-            timestamp: item.payload.timestamp,
-            productos: products
-        };
-        database.update(id, obj).then(item => {
-            if (item.status === 'Error') {
-                res.status(404).send(item.message);
-            }
-            res.send(item)
-        })
     })
 })
 
@@ -71,7 +80,7 @@ APICart.delete('/:id', (req, res) => {
             if (item.status === 'Error') {
                 res.status(404).send(item.message);
             }
-            res.send(item)
+            res.send(item.message)
         })
         .catch(err => {
             res.send(err)
@@ -87,13 +96,13 @@ APICart.delete('/:id/productos/:id_prod', (req, res) => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
-        try {
-            let products = item.payload.productos
-            let findProduct = products.find(item => item.id === id_prod)
-            if (!findProduct) {
-                throw new Error();
-            }
-            let excludeProducts = products.filter(item => item.id !== id_prod)
+        let products = item.payload.productos
+        let findProduct = products.find(item => item === id_prod)
+
+        if (!findProduct) {
+            res.status(404).send('El producto a eliminar no existe.')
+        } else {
+            let excludeProducts = products.filter(item => item !== id_prod)
             let obj = {
                 id: item.payload.id,
                 timestamp: item.payload.timestamp,
@@ -103,10 +112,9 @@ APICart.delete('/:id/productos/:id_prod', (req, res) => {
                 if (item.status === 'Error') {
                     res.status(404).send(item.message);
                 }
-                res.send(item)
+                res.send('Se elimino un producto de la lista');
+
             })
-        } catch (err) {
-            return { status: 'Error', message: 'El producto no existe.' }
         }
     })
 })

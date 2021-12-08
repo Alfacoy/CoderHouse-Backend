@@ -4,7 +4,6 @@ import Contenedor from '../clases/databaseFS.js'; // CONTROLARDOR-DB
 import { middlewareAuth } from '../helper/middlewares.js'; 
 
 const APIProducts = Router();
-//const routerVIEW = Router();
 const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
 
 /*=========================================*/
@@ -34,11 +33,15 @@ APIProducts.get('/:pid', (req, res) => {
 
 // POST
 APIProducts.post('/', middlewareAuth ,(req, res) => {
-    let { title, thumbnail, price } = req.body;
+    let { title, description, code, thumbnail, price, stock } = req.body;
     const product = {
+        timestamp: Date.now(),
         title,
+        description,
+        code: `PROD-${Date.now()}`,
         thumbnail,
-        price
+        price,
+        stock
     }
     database.save(product).then(item => {
         if (item.status === 'Error') {
@@ -49,7 +52,7 @@ APIProducts.post('/', middlewareAuth ,(req, res) => {
                 req.io.io.emit('updateProducts', items);
             }
         })
-        res.send(item) // ERR_HTTP_INVALID_STATUS_CODE al enviar item.id
+        res.send(JSON.stringify(item.id)) 
     })
 
 })
@@ -63,7 +66,7 @@ APIProducts.put('/:pid', middlewareAuth, (req, res) => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
-        res.send(item)
+        res.send(item.message)
     })
 })
 
@@ -76,7 +79,7 @@ APIProducts.delete('/:pid', middlewareAuth, (req, res) => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
-        res.send(item)
+        res.send(item.message)
     })
         .catch(err => {
             res.send(err)
@@ -104,7 +107,4 @@ routerVIEW.get('/chat', (req, res) => {
     res.render('Chat');
 }) */
 
-export {
-    APIProducts,
-   // routerVIEW
-}
+export default APIProducts

@@ -69,7 +69,9 @@ document.addEventListener('submit', (event) => {
     const obj = {
         title: data.get('title'),
         price: data.get('price'),
-        thumbnail: data.get('thumbnail')
+        thumbnail: data.get('thumbnail'),
+        description: data.get('description'),
+        stock: data.get('stock')
     }
     fetch('/api/productos/', {
         method: 'POST',
