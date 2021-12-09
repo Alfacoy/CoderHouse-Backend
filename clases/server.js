@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { engine } from 'express-handlebars';
-import { resolve } from 'path';
+/* import { resolve } from 'path'; */
 
 // ROUTES
 import APIProducts from '../routes/products.js'; 
