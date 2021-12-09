@@ -19,7 +19,7 @@ APICart.get('/:id/productos', (req, res) => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         } else {
-            res.send(item.payload.productos)
+            res.send(item.payload)
         }
     })
 })
