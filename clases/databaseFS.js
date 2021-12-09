@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { resolve } from 'path';
+/* import { resolve } from 'path'; */
 
 import { messageDefaultContenedor } from '../helper/statusMessage.js';
 
 class Contenedor {
     constructor(fileName) {
-        this.path = `${resolve('src')}/files/`; // Arreglar Ruta
+        this.path = `./files/`; // Arreglar Ruta
         this._file = `${fileName}.txt`;
         this.status = messageDefaultContenedor;
     }
