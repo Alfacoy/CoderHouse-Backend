@@ -30,7 +30,7 @@ class Server {
 
     // MIDDLEWARES-1
     middlewares() {
-        this.app.use(express.static(resolve('src/public'))); // Arreglar ruta
+        this.app.use(express.static('public')); // Arreglar ruta
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
@@ -73,7 +73,7 @@ class Server {
     // ENGINES-3
     engines() {
         this.app.engine('handlebars', engine());
-        this.app.set('views', resolve('src/views')); // Arreglar ruta
+        this.app.set('views','views'); // Arreglar ruta
         this.app.set('view engine', 'handlebars');
     }
     
