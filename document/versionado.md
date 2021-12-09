@@ -38,3 +38,11 @@ puede guardar productos, sino que también mensajes de chat, logs de servidor, e
 
 **0.6.2** [05/12/2021]
 * Se modifica el README.
+
+**0.7.0** [08/12/2021]
+* Se agrega un pequeño sistema de logeo.
+* Se modifica el como reciben datos las rutas de crear productos, agregar productos al carrito y borrar productos del carrito.
+
+**0.7.1** [08/12/2021]
+* Se elimina código fuera de uso.
+
