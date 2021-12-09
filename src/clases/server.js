@@ -45,6 +45,23 @@ class Server {
     routes() {
         this.app.use('/api/productos', APIProducts);
         this.app.use('/api/carrito', APICart);
+        this.app.post('/login', (req, res) => {
+            const pass = 'abc';
+            if (req.body.pass === pass) {
+                this.admin = true;
+                res.send('Logeo exitoso')
+            } else {
+                res.send('Error al tratar de logearse')
+            }
+        })
+        this.app.post('/logout', (req, res) => {
+            if (this.admin) {
+                this.admin = false;
+                res.send('Se desconecto de manera exitosa.')
+            } else {
+                res.send('No hay usuario para deslogear.')
+            }
+        })
         this.app.use('/*', (req, res) => {
             res.send({
                 error: -2,
