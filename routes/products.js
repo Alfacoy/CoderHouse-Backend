@@ -33,7 +33,7 @@ APIProducts.get('/:pid', (req, res) => {
 
 // POST
 APIProducts.post('/', middlewareAuth ,(req, res) => {
-    let { title, description, code, thumbnail, price, stock } = req.body;
+    let { title, description, thumbnail, price, stock } = req.body;
     const product = {
         timestamp: Date.now(),
         title,
@@ -43,18 +43,22 @@ APIProducts.post('/', middlewareAuth ,(req, res) => {
         price,
         stock
     }
-    database.save(product).then(item => {
-        if (item.status === 'Error') {
-            res.status(404).send(item.message);
-        }
-        database.getAll().then(items => {
-            if (items.status === 'Success') {
-                req.io.io.emit('updateProducts', items);
-            }
-        })
-        res.send(JSON.stringify(item.id)) 
-    })
 
+    if (!title || !description || !thumbnail || !price || !stock) {
+        res.status(404).send('No se puede guardar un producto con campos incompletos.')
+    } else {
+        database.save(product).then(item => {
+            if (item.status === 'Error') {
+                res.status(404).send(item.message);
+            }
+            database.getAll().then(items => {
+                if (items.status === 'Success') {
+                    req.io.io.emit('updateProducts', items);
+                }
+            })
+            res.send(JSON.stringify(item.id))
+        })
+    }
 })
 
 // PUT

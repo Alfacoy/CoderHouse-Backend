@@ -48,24 +48,28 @@ APICart.post('/:id/productos', (req, res) => {
             res.status(404).send(e.message);
         } else {
             const products = e.payload.productos
-            databasePROD.getById(parseInt(pid)).then(el => {
-                if (el.status === 'Error') {
-                    res.status(404).send(el.message);
-                } else {
-                    products.push(pid)
-                    const obj = {
-                        id: e.payload.id,
-                        timestamp: e.payload.timestamp,
-                        productos: products
-                    };
-                    database.update(parseInt(id), obj).then(ele => {
-                        if (ele.status === 'Error') {
-                            res.status(404).send(ele.message);
-                        }
-                        res.send(ele.message)
-                    })
-                }
-            })
+            if (!products.find(e => e === parseInt(pid))) {
+                databasePROD.getById(parseInt(pid)).then(el => {
+                    if (el.status === 'Error') {
+                        res.status(404).send(el.message);
+                    } else {
+                        products.push(pid)
+                        const obj = {
+                            id: e.payload.id,
+                            timestamp: e.payload.timestamp,
+                            productos: products
+                        };
+                        database.update(parseInt(id), obj).then(ele => {
+                            if (ele.status === 'Error') {
+                                res.status(404).send(ele.message);
+                            }
+                            res.send(ele.message)
+                        })
+                    }
+                })
+            } else {
+                res.status(404).send('El producto ya existe en el carrito.');
+            }
         }
     })
 })
