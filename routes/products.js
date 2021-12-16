@@ -2,9 +2,11 @@ import { Router } from 'express';
 
 import Contenedor from '../clases/databaseFS.js'; // CONTROLARDOR-DB
 import { middlewareAuth } from '../helper/middlewares.js'; 
+import Product from '../clases/Product.js';
 
 const APIProducts = Router();
 const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
+const databaseProd = new Product();
 
 /*=========================================*/
 /*=                  API                  =*/
@@ -12,7 +14,7 @@ const database = new Contenedor('productos'); // INSTANCIA-CONTROLADOR-DB
 
 // GET
 APIProducts.get('/', (req, res) => {
-    database.getAll().then(items => {
+    databaseProd.getAll().then(items => {
         if (items.status === 'Error') {
             res.status(404).send(items.message);
         }
@@ -23,7 +25,7 @@ APIProducts.get('/', (req, res) => {
 APIProducts.get('/:pid', (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
-    database.getById(pid).then(item => {
+    databaseProd.getById(pid).then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         }
@@ -35,7 +37,6 @@ APIProducts.get('/:pid', (req, res) => {
 APIProducts.post('/', middlewareAuth ,(req, res) => {
     let { title, description, thumbnail, price, stock } = req.body;
     const product = {
-        timestamp: Date.now(),
         title,
         description,
         code: `PROD-${Date.now()}`,
@@ -47,17 +48,18 @@ APIProducts.post('/', middlewareAuth ,(req, res) => {
     if (!title || !description || !thumbnail || !price || !stock) {
         res.status(404).send('No se puede guardar un producto con campos incompletos.')
     } else {
-        database.save(product).then(item => {
+        databaseProd.save(product).then(item => {
             if (item.status === 'Error') {
                 res.status(404).send(item.message);
             }
-            database.getAll().then(items => {
+            databaseProd.getAll().then(items => {
                 if (items.status === 'Success') {
-                    req.io.io.emit('updateProducts', items);
+                    let res = JSON.parse(JSON.stringify(items))
+                    req.io.io.emit('updateProducts', res);
                 }
-            })
+            }).catch(err => console.log(err))
             res.send(JSON.stringify(item.id))
-        })
+        }).catch(err => console.log(err))
     }
 })
 
@@ -66,11 +68,12 @@ APIProducts.put('/:pid', middlewareAuth, (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
     let obj = req.body;
-    database.update(pid, obj).then(item => {
+    databaseProd.update(pid, obj).then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
+        } else {
+            res.send(item.message)
         }
-        res.send(item.message)
     })
 })
 
@@ -78,16 +81,17 @@ APIProducts.put('/:pid', middlewareAuth, (req, res) => {
 APIProducts.delete('/:pid', middlewareAuth, (req, res) => {
     let { pid } = req.params;
     pid = parseInt(pid);
-    database.deleteById(pid)
+    databaseProd.deleteById(pid)
         .then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
+        } else {
+            res.send(item.message)
         }
-        res.send(item.message)
     })
-        .catch(err => {
-            res.send(err)
-        })
+    .catch(err => {
+        res.send(err)
+    })
 })
 
 /*=========================================*/

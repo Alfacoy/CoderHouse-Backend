@@ -26,7 +26,7 @@ socket.on('updateChat', data => {
     const messages = data.payload; // MODIFICAR LOS MENSAJES EN DATABASEFS
     if (messages) {
         messages.map(item => {
-            chatBox.appendChild(addMessageChat(item.user, formatDate(item.date),item.message))
+            chatBox.appendChild(addMessageChat(item.email, item.created_at, item.message))
         })
     }
 })
@@ -35,7 +35,7 @@ socket.on('webChat', (message) => {
     const chatBox = document.querySelector('#chatBox');
     const list = message;
     if (list) {
-        chatBox.appendChild(addMessageChat(list.user, formatDate(list.date),list.message))
+        chatBox.appendChild(addMessageChat(list.email,list.created_at, list.message))
     } 
 })
 
@@ -46,7 +46,7 @@ chatButton.addEventListener('click', (event) => {
     const chatInputMessage = document.querySelector('#messageChat');
     const chatInputEmail = document.querySelector('#emailChat');
     const objMessage = {
-        user: chatInputEmail.value,
+        email: chatInputEmail.value,
         message: chatInputMessage.value,
     }
     socket.emit('webChat', objMessage);
@@ -100,7 +100,7 @@ const addMessageChat = (user, date, message) => {
     const messageSpan = document.createElement('span');
 
     userSpan.innerText = `${user} `;
-    dateSpan.innerText = `${date}: `;
+    dateSpan.innerText = `${date} `;
     messageSpan.innerText = `${message}`;
 
     body.classList.add('lead');

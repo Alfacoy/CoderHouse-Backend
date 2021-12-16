@@ -2,11 +2,15 @@ import { Server } from 'socket.io';
 
 import Contenedor from './databaseFS.js';
 
+import Chat from '../clases/Chat.js';
+import Product from './Product.js';
+
 class Socket {  
     constructor(conn) {
         this.io = new Server(conn);
         this.productsFS = new Contenedor('productos');
-        this.messageFS = new Contenedor('chat');
+        this.chatDB = new Chat();
+        this.productDB = new Product();
         this.on();
     }
 
@@ -15,19 +19,17 @@ class Socket {
             async (socket) => {
                 console.log('Usuario conectado');
 
-                let productos = await this.productsFS.getAll()
-                socket.emit('updateProducts', productos);
+                let products = await this.productDB.getAll()
+                socket.emit('updateProducts', products);
 
-                let mensajes = await this.messageFS.getAll();
-                socket.emit('updateChat', mensajes)
+                let messages = await this.chatDB.GetMessages();
+                socket.emit('updateChat', messages)
             
                 socket.on('webChat', (msg) => {
                     try {
-                        const obj = {
-                            ...msg, date: Date()
-                        }
-                        this.messageFS.save(obj).then(() => {
-                           this.io.emit('webChat', obj) 
+                        this.chatDB.CreateMessage(msg).then(async (e) => {
+                            let refreshChat = await this.chatDB.GetMessageById(e.payload[0]);
+                           this.io.emit('webChat', refreshChat.payload) 
                         });
                     } catch (err) {
                         console.log(err);
