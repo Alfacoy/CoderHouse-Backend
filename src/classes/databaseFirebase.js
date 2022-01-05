@@ -18,7 +18,7 @@ export default class Contenedor {
             const newElement = await this.collection.add(object).then(doc => doc.id);
             return { status: 'Success', message: 'Un nuevo elemento fue agregado a la base de datos.', id: newElement }
         } catch (err) {
-            return { status: 'Error', message: `Hubo un error: ${err}` }
+            return { status: 'Error', message: `No se pudo guardar el documento: ${err}` }
         }
     }
 
@@ -29,7 +29,7 @@ export default class Contenedor {
             const res = data.map(doc => doc.data());
             return { status: 'Success', message: 'Se obtuvieron de manera exitosa los datos.', payload: res }
         } catch (err) {
-            return { status: 'Error', message: `Hubo un error: ${err}` }
+            return { status: 'Error', message: `No se pudo encontrar los documentos: ${err}` }
         }
     }
 
@@ -44,7 +44,7 @@ export default class Contenedor {
                 return { status: 'Success', message: 'Se obtuvo el elemento buscado.', payload: res }
             }
         } catch (err) {
-            return { status: 'Error', message: `Hubo un error: ${err}` }
+            return { status: 'Error', message: `No se pudo obtener el documento solicitado: ${err}` }
         }
     }
 
@@ -54,7 +54,7 @@ export default class Contenedor {
             await doc.update(object);
             return { status: 'Success', message: 'Se actualizo con éxito el elemento.'}
         } catch (err) {
-            return { status: 'Error', message: `Hubo un error: ${err}` }
+            return { status: 'Error', message: `No se pudo actualizar el documento: ${err}` }
         }
     }
 
@@ -69,7 +69,7 @@ export default class Contenedor {
                 return { status: 'Success', message: 'Se elimino con éxito el elemento.'}
             }
         } catch (err) {
-            return { status: 'Error', message: `Hubo un error: ${err}` }
+            return { status: 'Error', message: `No se pudo eliminar el documento: ${err}` }
         }
     }
 }
