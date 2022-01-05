@@ -1,13 +1,14 @@
+// EXPRESS
 import express from 'express';
 import cors from 'cors';
 import { engine } from 'express-handlebars';
-/* import { resolve } from 'path'; */
-
+// SOCKET
+import Socket from '../classes/socket.js';
+// UTILS
+import __dirname from '../utils.js';
 // ROUTES
 import APIProducts from '../routes/products.js'; 
 import APICart from '../routes/cart.js';
-
-import Socket from './socket.js';
 
 // INITIAL CONFIG
 const config = {
@@ -15,7 +16,7 @@ const config = {
     admin: true
 }
 
-class Server {
+export default class Server {
     constructor(port = config.port, admin = config.admin) {
         this.app = express();
         this.PORT = process.env.PORT || port;
@@ -27,10 +28,9 @@ class Server {
         this.engines();
     }
 
-
     // MIDDLEWARES-1
     middlewares() {
-        this.app.use(express.static('public')); // Arreglar ruta
+        this.app.use(express.static(`${__dirname}/public`));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
@@ -49,21 +49,21 @@ class Server {
             const pass = 'abc';
             if (req.body.pass === pass) {
                 this.admin = true;
-                res.send('Logeo exitoso')
+                res.status(200).send('Logeo exitoso')
             } else {
-                res.send('Error al tratar de logearse')
+                res.status(401).send('Error al tratar de logearse')
             }
         })
         this.app.post('/logout', (req, res) => {
             if (this.admin) {
                 this.admin = false;
-                res.send('Se desconecto de manera exitosa.')
+                res.status(200).send('Se desconecto de manera exitosa.')
             } else {
-                res.send('No hay usuario para deslogear.')
+                res.status(404).send('No hay usuario para deslogear.')
             }
         })
         this.app.use('/*', (req, res) => {
-            res.send({
+            res.status(400).send({
                 error: -2,
                 descripcion: `La ruta '${req.baseUrl}' con el método [${req.method}] no existe.`
             })
@@ -82,5 +82,3 @@ class Server {
         this.socket;
     }
 }
-
-export default Server;

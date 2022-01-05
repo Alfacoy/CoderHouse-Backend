@@ -1,27 +1,29 @@
 import fs from 'fs';
-/* import { resolve } from 'path'; */
+import config from '../config.js';
 
-import { messageDefaultContenedor } from '../helper/statusMessage.js';
+import { messageDefaultContenedor } from '../helper/statusMessage.js';//BORRAR
 
-class Contenedor {
+export default class Contenedor {
     constructor(fileName) {
-        this.path = `./files/`; // Arreglar Ruta
+        this.path = config.fileSystem.baseUrl;
         this._file = `${fileName}.txt`;
+        this.url = `${this.path}${this._file}`
         this.status = messageDefaultContenedor;
     }
 
     async save(object){
         // Recibe un objeto, lo guarda en el archivo, devuelve el id asignado.
         try {
-            let res = await fs.promises.readFile(`${this.path}${this._file}`, 'utf-8');
+            let res = await fs.promises.readFile(`${this.url}`, 'utf-8');
             let content = JSON.parse(res);
+            let newId = parseInt(content[content.length - 1].id) + 1
             const newElement = {
-                id: content[content.length - 1].id + 1,
+                id: String(newId),
                 ...object
             }
             content.push(newElement);
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`,JSON.stringify(content,null,2))
+                await fs.promises.writeFile(`${this.url}`,JSON.stringify(content,null,2))
                 return { status: 'Success', message: this.status.save.success.message, id: newElement.id }
             }catch(err) {
                 return { status: 'Error', message: this.status.save.error.message, error: err}
@@ -29,12 +31,12 @@ class Contenedor {
         }catch(err) {
             const newElement = [
                 {
-                    id: 1,
+                    id: "1",
                     ...object
                 }
             ]
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(newElement,null,2))
+                await fs.promises.writeFile(`${this.url}`, JSON.stringify(newElement,null,2))
                 return { status: 'Success', message: this.status.save.success.message, id: newElement[0].id}
             } catch (err) {
                 return { status: 'Error', message: this.status.save.error.message, error: err}
@@ -45,7 +47,7 @@ class Contenedor {
     async getById(id) {
         // Recibe un id y devuelve el objeto con ese id, o null si no está.
         try{
-            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let res = await fs.promises.readFile(`${this.url}`,'utf-8');
             let content = JSON.parse(res);
             let findElement = content.find(el => el.id === id) 
             if (!findElement) {
@@ -60,7 +62,7 @@ class Contenedor {
     async update(id, object) {
         // Recibe un id de contenido y lo reemplaza por uno nuevo.
         try {
-            let res = await fs.promises.readFile(`${this.path}${this._file}`, 'utf-8');
+            let res = await fs.promises.readFile(`${this.url}`, 'utf-8');
             let content = JSON.parse(res);
             let findElement = content.find(el => el.id === id)
             if (!findElement) {
@@ -70,6 +72,7 @@ class Contenedor {
                 if (item.id === id) {
                     const pushElement = {
                         id: item.id,
+                        code: item.code,
                         ...object
                     }
                     return pushElement
@@ -78,8 +81,8 @@ class Contenedor {
                 }
             })
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(updateElement, null, 2))
-                return { status: 'Success', message: this.status.update.success.message, id: findElement.id }
+                await fs.promises.writeFile(`${this.url}`, JSON.stringify(updateElement, null, 2))
+                return { status: 'Success', message: this.status.update.success.message}
             } catch (err) {
                 return { status: 'Error', message: this.status.update.error.message, error: err }
             }
@@ -91,7 +94,7 @@ class Contenedor {
     async getAll() {
         // Devuelve un array con los objetos presentes en el archivo.
         try{
-            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let res = await fs.promises.readFile(`${this.url}`,'utf-8');
             let content = JSON.parse(res);
             return {status: 'Success', message: this.status.getAll.success.message, payload: content}
         }catch(err){
@@ -102,7 +105,7 @@ class Contenedor {
     async deleteById(id) {
         // Elimina del archivo el objeto con el id buscado.
         try{
-            let res = await fs.promises.readFile(`${this.path}${this._file}`,'utf-8');
+            let res = await fs.promises.readFile(`${this.url}`,'utf-8');
             let content = JSON.parse(res);
             let findElement = content.find(el=>el.id === id)
             if(!findElement){
@@ -110,7 +113,7 @@ class Contenedor {
             }
             let excludedElement = content.filter(el=>el.id !== id);
             try {
-                await fs.promises.writeFile(`${this.path}${this._file}`, JSON.stringify(excludedElement,null,2))
+                await fs.promises.writeFile(`${this.url}`, JSON.stringify(excludedElement,null,2))
                 return { status: 'Success', message: this.status.deleteById.success.message}
             }catch(err){
                 return { status: 'Error', message: this.status.deleteById.error.message}
@@ -123,14 +126,10 @@ class Contenedor {
     async deleteAll() {
         // Elimina todos los objetos presentes en el archivo..
         try{
-            await fs.promises.unlink(`${this.path}${this._file}`);
+            await fs.promises.unlink(`${this.url}`);
             return { status: 'Success', message: this.status.deleteAll.success.message}
         }catch(err){
             return { status: 'Error', message: this.status.deleteAll.error.message, error: err}
         }
     }
 }
-
-export default Contenedor;
-
-

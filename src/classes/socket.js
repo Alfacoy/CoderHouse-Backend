@@ -1,16 +1,11 @@
 import { Server } from 'socket.io';
+import  Chat  from './Chat.js';
+import { product } from '../daos/index.js';
 
-import Contenedor from './databaseFS.js';
-
-import Chat from '../clases/Chat.js';
-import Product from './Product.js';
-
-class Socket {  
+export default class Socket {  
     constructor(conn) {
         this.io = new Server(conn);
-        this.productsFS = new Contenedor('productos');
         this.chatDB = new Chat();
-        this.productDB = new Product();
         this.on();
     }
 
@@ -19,7 +14,7 @@ class Socket {
             async (socket) => {
                 console.log('Usuario conectado');
 
-                let products = await this.productDB.getAll()
+                let products = await product.getAll()
                 socket.emit('updateProducts', products);
 
                 let messages = await this.chatDB.GetMessages();
@@ -44,5 +39,3 @@ class Socket {
             })
     }
 }
-
-export default Socket;

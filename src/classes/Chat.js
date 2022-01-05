@@ -1,4 +1,10 @@
-import databaseChat from '../config.js';
+import knex from 'knex';
+import config from '../config.js';
+
+const databaseChat = knex({
+    client: config.sqlite.client,
+    connection: config.sqlite.baseUrl
+})
 
 class Chat {
     constructor() {
