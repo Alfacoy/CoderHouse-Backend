@@ -5,7 +5,12 @@ const APIFakeProducts = Router();
 const fakeProduct = new mock();
 
 APIFakeProducts.get('', (req, res) => {
-    res.send(fakeProduct.generate(5));
+    const data = fakeProduct.generate(5);
+    if (data.status === 'error') {
+        res.status(400).send(data.message);
+    } else {
+        res.status(200).send(data.payload);
+    }
 })
 
 
