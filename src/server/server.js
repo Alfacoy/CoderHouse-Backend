@@ -8,6 +8,7 @@ import Socket from '../classes/socket.js';
 import __dirname from '../utils.js';
 // ROUTES
 import APIProducts from '../routes/products.js'; 
+import APIFakeProducts from '../routes/fakeProducts.js';
 import APICart from '../routes/cart.js';
 
 // INITIAL CONFIG
@@ -44,6 +45,7 @@ export default class Server {
     // ROUTES-2
     routes() {
         this.app.use('/api/productos', APIProducts);
+        this.app.use('/api/productos-test', APIFakeProducts);
         this.app.use('/api/carrito', APICart);
         this.app.post('/login', (req, res) => {
             const pass = 'abc';
