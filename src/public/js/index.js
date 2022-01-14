@@ -23,19 +23,25 @@ socket.on('updateProducts', data => {
 // SOCKET PARA WEB CHAT
 socket.on('updateChat', data => {
     const chatBox = document.querySelector('#chatBox');
-    const messages = data.payload; // MODIFICAR LOS MENSAJES EN DATABASEFS
-    if (messages) {
-        messages.map(item => {
-            chatBox.appendChild(addMessageChat(item.email, item.created_at, item.message))
-        })
-    }
+    const messages = data.payload;
+    if (!messages) {
+        createMessage(chatBox, 'No hay mensajes de chat.')
+    } else {
+        if (messages.length > 0) {
+            messages.map(item => {
+                chatBox.appendChild(addMessageChat(item.author.email, item.createdAt, item.text))
+            })
+        } else {
+            createMessage(chatBox, 'No hay mensajes de chat.')
+        }
+    }    
 })
 
 socket.on('webChat', (message) => {
     const chatBox = document.querySelector('#chatBox');
     const list = message;
     if (list) {
-        chatBox.appendChild(addMessageChat(list.email,list.created_at, list.message))
+        chatBox.appendChild(addMessageChat(list.author.id,list.createdAt, list.text))
     } 
 })
 
@@ -45,8 +51,14 @@ chatButton.addEventListener('click', (event) => {
 
     const chatInputMessage = document.querySelector('#messageChat');
     const chatInputEmail = document.querySelector('#emailChat');
+    const chatInputFirstName = document.querySelector('#firstNameChat');
+    const chatInputLastName = document.querySelector('#lastNameChat');
+    const chatInputAge = document.querySelector('#ageChat');
     const objMessage = {
         email: chatInputEmail.value,
+        firstName: chatInputFirstName.value,
+        lastName: chatInputLastName.value,
+        age: chatInputAge.value,
         message: chatInputMessage.value,
     }
     socket.emit('webChat', objMessage);
@@ -100,7 +112,7 @@ const addMessageChat = (user, date, message) => {
     const messageSpan = document.createElement('span');
 
     userSpan.innerText = `${user} `;
-    dateSpan.innerText = `${date} `;
+    dateSpan.innerText = `${formatDate(date)} `;
     messageSpan.innerText = `${message}`;
 
     body.classList.add('lead');
@@ -155,10 +167,10 @@ const cleanRender = (zone) => {
     }
 }
 
-// DEPRECATED
 const createMessage = (zone, message) => {
     const p = document.createElement('p');
     p.innerText = message
+    p.setAttribute('class','lead')
     zone.appendChild(p);
 }
 /*=========================================*/

@@ -22,9 +22,13 @@ export default class Socket {
             
                 socket.on('webChat', (msg) => {
                     try {
+                        const { email, firstName, lastName, age, message } = msg;
+                        if (!email || !firstName || !lastName || !age || !message) {
+                            return console.log('No es posible guardar un mensaje sin uno de los datos requeridos.')
+                        }
                         this.chatDB.CreateMessage(msg).then(async (e) => {
-                            let refreshChat = await this.chatDB.GetMessageById(e.payload[0]);
-                           this.io.emit('webChat', refreshChat.payload) 
+                            let refreshChat = await this.chatDB.GetMessageById(e.payload);
+                            this.io.emit('webChat', refreshChat.payload) 
                         });
                     } catch (err) {
                         console.log(err);
