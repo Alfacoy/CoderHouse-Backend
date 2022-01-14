@@ -41,7 +41,7 @@ socket.on('webChat', (message) => {
     const chatBox = document.querySelector('#chatBox');
     const list = message;
     if (list) {
-        chatBox.appendChild(addMessageChat(list.author.id,list.createdAt, list.text))
+        chatBox.appendChild(addMessageChat(list.author.email,list.createdAt, list.text))
     } 
 })
 
