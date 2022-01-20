@@ -1,13 +1,33 @@
 /*=========================================*/
-/*=              INICIO SOCKET            =*/
+/*=              AUTH USER                =*/
+/*=========================================*/
+fetch('/currentUser').then(res => res.json()).then(data => {
+    const username = document.querySelector('#userNameDB');
+    if (data.status === 'Error') return location.replace('./pages/login.html');
+    if (data.status === 'Success') {
+        localStorage.setItem('currentUser', JSON.stringify(data))
+        username.innerHTML = data.payload.username;
+    }
+})
+    
+const logoutBtn = document.querySelector('#logoutBtn');
+logoutBtn.addEventListener('click', () => {
+    fetch('/logout').then(res => res.json()).then(data => {
+        if (data.status === 'Error') return console.log(data.message)
+        location.replace('./pages/logout.html')   
+    })    
+})
+
+/*=========================================*/
+/*=               SOCKET                  =*/
 /*=========================================*/
 const socket = io();
 const chatButton = document.querySelector('#chatButton');
 
-// SOCKET PARA PRODUCTOS
+// UPDATE PRODUCTS
 socket.on('updateProducts', data => {
     const listOfProducts = document.querySelector('#listOfProducts');
-    let productos = data.payload;
+    const productos = data.payload;
     fetch('templates/Productos.handlebars')
         .then(res => res.text())
         .then(template => {
@@ -20,35 +40,28 @@ socket.on('updateProducts', data => {
         })
     })
 
-// SOCKET PARA WEB CHAT
+// UPDATE WEB CHAT
 socket.on('updateChat', data => {
     const chatBox = document.querySelector('#chatBox');
     const messages = data.payload;
-    if (!messages) {
-        createMessage(chatBox, 'No hay mensajes de chat.')
+    if (messages.length > 0) {
+        messages.map(item => {
+            chatBox.appendChild(addMessageChat(item.author.email, item.createdAt, item.text))
+        })
     } else {
-        if (messages.length > 0) {
-            messages.map(item => {
-                chatBox.appendChild(addMessageChat(item.author.email, item.createdAt, item.text))
-            })
-        } else {
-            createMessage(chatBox, 'No hay mensajes de chat.')
-        }
-    }    
+        createMessage(chatBox, 'No hay mensajes de chat.')
+    }   
 })
 
 socket.on('webChat', (message) => {
     const chatBox = document.querySelector('#chatBox');
     const list = message;
-    if (list) {
-        chatBox.appendChild(addMessageChat(list.author.email,list.createdAt, list.text))
-    } 
+    if (list) return chatBox.appendChild(addMessageChat(list.author.email,list.createdAt, list.text))  
 })
 
 // EVENT LISTENER WEB CHAT
 chatButton.addEventListener('click', (event) => {
     event.preventDefault();
-
     const chatInputMessage = document.querySelector('#messageChat');
     const chatInputEmail = document.querySelector('#emailChat');
     const chatInputFirstName = document.querySelector('#firstNameChat');
@@ -62,16 +75,11 @@ chatButton.addEventListener('click', (event) => {
         message: chatInputMessage.value,
     }
     socket.emit('webChat', objMessage);
-
     chatInputMessage.value = '';
 })
-/*=========================================*/
-/*=               FIN SOCKET              =*/
-/*=========================================*/
-
 
 /*=========================================*/
-/*=            INICIO PRODUCTO            =*/
+/*=               PRODUCT                 =*/
 /*=========================================*/
 // Formulario agregar producto
 document.addEventListener('submit', (event) => {
@@ -94,16 +102,12 @@ document.addEventListener('submit', (event) => {
     })
         .then(res => res.json())
         .then(data => {
-           /*  location.href="/" */
+           console.log(data)
         })
 })
-/*=========================================*/
-/*=              FIN PRODUCTO             =*/
-/*=========================================*/
-
 
 /*=========================================*/
-/*=             INICIO UTILS              =*/
+/*=                 UTILS                 =*/
 /*=========================================*/
 const addMessageChat = (user, date, message) => {
     const body = document.createElement('p');
@@ -170,9 +174,6 @@ const cleanRender = (zone) => {
 const createMessage = (zone, message) => {
     const p = document.createElement('p');
     p.innerText = message
-    p.setAttribute('class','lead')
+    p.setAttribute('class', 'lead')
     zone.appendChild(p);
 }
-/*=========================================*/
-/*=             FIN UTILS                 =*/
-/*=========================================*/

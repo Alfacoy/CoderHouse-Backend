@@ -25,7 +25,6 @@ export default class CartMongo extends Contenedor {
             }
             
             await this.collection.updateOne({ _id: id }, { $push: { productos: pid } });
-
             return { status: 'Success', message: 'Se agrego un producto al carrito.' };
         } catch (err) {
             return { status: 'Error', message: `Hubo un error: ${err}` };
@@ -48,8 +47,7 @@ export default class CartMongo extends Contenedor {
                 return { status: 'Error', message: `No existe el producto dentro del carrito.` };
             }
 
-            await this.collection.updateOne({ _id: id }, { $pull: { productos: pid } });
-            
+            await this.collection.updateOne({ _id: id }, { $pull: { productos: pid } }); 
             return { status: 'Success', message: 'Se elimino un producto al carrito.' };
         } catch (err) {
             return { status: 'Error', message: `Hubo un error: ${err}` };

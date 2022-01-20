@@ -13,29 +13,6 @@ class Chat {
     async GetMessages() {
         try {
             const messages = await this.collection.find();
-
-/*             try {
-                console.log(messages)
-                const newMessages = {
-                    id: '1',
-                    messages: messages
-                }
-                console.log(newMessages)
-                const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' });
-                const postSchema = new schema.Entity('post', { author: authorSchema }, { idAttribute: '_id' });
-                const messageSchema = new schema.Entity('message', { messages: [postSchema] })
-                const normalizeData = normalize(messages, messageSchema)
-
-                console.log(`NormalizeData: ${JSON.stringify(normalizeData,null,2)}`)
-
-                const denormalizeData = denormalize(normalizeData.result, messageSchema, normalizeData.entities)
-                console.log(`DenormalizeData: ${denormalizeData}`)
-
-                
-            } catch (err) {
-                return console.log(err)
-            } */
-            
             return { status: 'success', payload: messages };
         } catch (err) {
             return { status: 'error', message: err }

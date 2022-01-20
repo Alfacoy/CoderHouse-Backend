@@ -17,6 +17,10 @@
 </head>
 
 <body class="container">
+    <div class="alert alert-primary d-flex justify-content-between mt-3">
+        <p class="lead">Bienvenido <span id="userNameDB" class="lead"></span></p>
+        <span id="logoutBtn" class="btn btn-warning lead">Logout</span>
+    </div>
 
     <h1 class="display-3 text-center">Formulario de carga</h1>
 
@@ -64,10 +68,11 @@
         <input class="btn btn-primary" type="submit" name="enviar" value="Enviar" id="chatButton">
     </form>
     
-
     <h3 class="display-6">Lista de mensajes</h3>
     <div id="chatBox"></div>
 
+    <div>
+    </div>
     <!--SCRIPTS-->
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>

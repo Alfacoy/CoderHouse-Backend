@@ -23,10 +23,6 @@ const config = {
             "client_x509_cert_url": process.env.CLIENT_X509
         },
         baseUrl: process.env.FIREBASE_URL
-    },
-    sqlite: {
-        client: 'sqlite3',
-        baseUrl: { filename: `${__dirname}/database/eccomerce.sqlite` }
     }
 }
 
