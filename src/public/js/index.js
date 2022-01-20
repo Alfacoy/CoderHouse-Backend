@@ -82,10 +82,11 @@ chatButton.addEventListener('click', (event) => {
 /*=               PRODUCT                 =*/
 /*=========================================*/
 // Formulario agregar producto
-document.addEventListener('submit', (event) => {
+const formAddProduct = document.querySelector('#formAddProduct');
+formAddProduct.addEventListener('submit', (event) => {
     event.preventDefault();
-    const form = document.querySelector('#formAddProduct');
-    const data = new FormData(form);
+    const messageBox = document.querySelector('#messageBox');
+    const data = new FormData(formAddProduct);
     const obj = {
         title: data.get('title'),
         price: data.get('price'),
@@ -100,10 +101,18 @@ document.addEventListener('submit', (event) => {
         },
         body: JSON.stringify(obj)
     })
-        .then(res => res.json())
-        .then(data => {
-           console.log(data)
-        })
+    .then(res => res.json())
+    .then(data => { 
+        if (messageBox.firstChild) {
+            cleanRender(messageBox); 
+        }
+        if (data.error === -2) return createMessage(messageBox, 'No tienes permisos para crear un producto.')
+        createMessage(messageBox, 'Producto creado con éxito.')
+    })
+    
+    setTimeout(() => {
+        cleanRender(messageBox)
+    }, 5000);
 })
 
 /*=========================================*/
