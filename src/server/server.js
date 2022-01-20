@@ -43,7 +43,7 @@ export default class Server {
             resave: true,
             saveUninitialized: false,
             cookie: {
-                maxAge: 60000
+                maxAge: 100000
             }
         }))
         this.app.use((req, res, next) => {
@@ -55,7 +55,6 @@ export default class Server {
     
     // ROUTES-2
     routes() {
-
 
         this.app.post('/login', (req, res) => {
             const { username } = req.body;
