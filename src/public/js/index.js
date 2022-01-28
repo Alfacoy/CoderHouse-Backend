@@ -1,18 +1,24 @@
 /*=========================================*/
 /*=              AUTH USER                =*/
 /*=========================================*/
-fetch('/currentUser').then(res => res.json()).then(data => {
+fetch('/auth/currentUser').then(res => res.json()).then(data => {
+    console.log(data)
     const username = document.querySelector('#userNameDB');
+    const picture = document.querySelector('#picture');
     if (data.status === 'Error') return location.replace('./pages/login.html');
     if (data.status === 'Success') {
         localStorage.setItem('currentUser', JSON.stringify(data))
-        username.innerHTML = data.payload.username;
+        username.innerHTML = data.payload.displayName || data.payload.username;
+        if (data.payload.picture) {
+            picture.setAttribute('src', `${data.payload.picture}`)
+        }
     }
 })
     
 const logoutBtn = document.querySelector('#logoutBtn');
 logoutBtn.addEventListener('click', () => {
-    fetch('/logout').then(res => res.json()).then(data => {
+    fetch('/auth/logout').then(res => res.json()).then(data => {
+        console.log(data)
         if (data.status === 'Error') return console.log(data.message)
         location.replace('./pages/logout.html')   
     })    

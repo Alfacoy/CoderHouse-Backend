@@ -8,7 +8,7 @@ loginForm.addEventListener('submit', (event) => {
     const userToLogin = {
         username: data.get('firstNameLog')
     }
-    fetch('/login', {
+    fetch('/auth/login', {
         method: "POST",
         body: JSON.stringify(userToLogin),
         headers: {'Content-Type':'application/json'}
@@ -16,4 +16,15 @@ loginForm.addEventListener('submit', (event) => {
         if (data.status === 'Error') return console.error('Hubo un error al tratar de logearse.');
         if(data.status === 'Success') return location.replace('../index.html');  
     })
+})
+
+
+
+const loginBtn = document.querySelector('#facebookLogin');
+
+loginBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    location = 'http://localhost:8080/auth/facebook';
+
 })
