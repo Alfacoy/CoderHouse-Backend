@@ -16,6 +16,27 @@
 <body class="container">
     <h1>Registro de usuario</h1>
 
+    <form id="registerFormUser">
+        <div class="mb-3">
+            <label for="emailToRegister" class="form-label lead">Email</label>
+            <input type="email" id="emailToRegister" name="emailToRegister" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="passToRegister" class="form-label lead">Contraseña</label>
+            <input type="password" id="passToRegister" name="passToRegister" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="repeatPassToRegister" class="form-label lead">Repetir contraseña</label>
+            <input type="password" id="repeatPassToRegister" name="repeatPassToRegister" class="form-control" required>
+        </div>
+        <input type="submit" value="Registrarse" class="btn btn-primary">
+    </form>
+        <hr>
+        <div class="alert alert-success">
+            ¿Ya tienes cuenta? <a href="./login.html">Vuelve al inicio.</a>
+        </div>
+    <!--TITLE-->
+    <script type="text/javascript" src="../js/register.js"></script>
 </body>
 
 </html>

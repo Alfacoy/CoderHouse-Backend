@@ -6,9 +6,9 @@ export default class UserMongo extends Contenedor {
         super('user', userSchema)
     }
 
-    async getUserByEmail(profile) {
+    async getUserByEmail(email) {
         try {
-            let findUser = await this.collection.findOne({ email: profile.emails[0].value })
+            let findUser = await this.collection.findOne({ email: email })
             return { status: 'Success', message: 'Usuario encontrado con éxito.', payload: findUser}
         } catch (err) {
             return { status: 'Error', message: 'No se pudo encontrar el usuario especificado.'}

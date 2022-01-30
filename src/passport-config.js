@@ -3,7 +3,7 @@ import fbStrategy from 'passport-facebook';
 import { user } from './daos/index.js';
 
 const FacebookStrategy = fbStrategy.Strategy;
-const DOMAIN = '3035-190-175-29-205.ngrok.io'
+const DOMAIN = '797c-190-175-24-251.ngrok.io'
 const URL = `https://${DOMAIN}/auth/facebook/callback`;
 
 const initializePassportConfig = () => {
@@ -14,7 +14,7 @@ const initializePassportConfig = () => {
         profileFields: ['emails', 'picture', 'displayName']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
-            let findUser = await user.getUserByEmail(profile);
+            let findUser = await user.getUserByEmail(profile.emails[0].value);
             const newDataUser = {
                 payload: {
                     ...findUser.payload._doc,
@@ -24,7 +24,7 @@ const initializePassportConfig = () => {
             }
             await user.update(newDataUser.payload._id, newDataUser.payload)
             try {
-                let facebookUser = await user.getUserByEmail(profile);
+                let facebookUser = await user.getUserByEmail(profile.emails[0].value);
                 done(null, facebookUser);
             } catch (err) {
                 done(err);

@@ -2,7 +2,7 @@
 /*=             LOGOUT USER               =*/
 /*=========================================*/
 const userNameField = document.querySelector('#userName');
-const userNameData = JSON.parse(localStorage.getItem('currentUser')).payload.displayName || JSON.parse(localStorage.getItem('currentUser')).payload.username;
+const userNameData = JSON.parse(localStorage.getItem('currentUser')).payload.displayName || JSON.parse(localStorage.getItem('currentUser')).payload.email;
 userNameField.innerText = userNameData;
 setTimeout(() => {
     location.replace('./login.html');
