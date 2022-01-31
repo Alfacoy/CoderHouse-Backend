@@ -75,7 +75,6 @@ export default class Server {
     // ENGINES-3
     engines() {
         this.app.engine('handlebars', engine());
-        this.app.set('views','views'); // Arreglar ruta
         this.app.set('view engine', 'handlebars');
     }
     
