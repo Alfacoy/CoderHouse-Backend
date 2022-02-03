@@ -16,6 +16,8 @@ import APIProducts from '../routes/products.js';
 import APIFakeProducts from '../routes/fakeProducts.js';
 import APICart from '../routes/cart.js';
 import APIAuth from '../routes/auth.js';
+import APIInfo from '../routes/info.js';
+import APIRandom from '../routes/random.js';
 
 // INITIAL CONFIG
 const initialConfig = {
@@ -63,7 +65,9 @@ export default class Server {
         this.app.use('/api/productos', APIProducts);
         this.app.use('/api/productos-test', APIFakeProducts);
         this.app.use('/api/carrito', APICart);
+        this.app.use('/api/random', APIRandom);
         this.app.use('/auth', APIAuth);
+        this.app.use('/info', APIInfo);
         this.app.use('/*', (req, res) => {
             res.status(400).send({
                 error: -2,
