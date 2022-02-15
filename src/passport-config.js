@@ -3,7 +3,7 @@ import fbStrategy from 'passport-facebook';
 import { user } from './daos/index.js';
 
 const FacebookStrategy = fbStrategy.Strategy;
-const DOMAIN = '797c-190-175-24-251.ngrok.io'
+const DOMAIN = 'coderhouse-alfacoy.herokuapp.com'
 const URL = `https://${DOMAIN}/auth/facebook/callback`;
 
 const initializePassportConfig = () => {
