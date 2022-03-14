@@ -1,0 +1,31 @@
+<h1 class="title">Contacto</h1>
+
+<h3 class="display-5">Centro de Mensajes</h3>
+<form>
+    <div class="mb-3 row">
+        <div class="col">
+            <label class="form-label" for="emailChat">Email</label>
+            <input class="form-control" name="email" id="emailChat" type="email" required>
+            <label class="form-label" for="emailChat">Nombre</label>
+            <input class="form-control" name="email" id="firstNameChat" required>
+        </div>
+        <div class="col">
+            <label class="form-label" for="emailChat">Edad</label>
+            <input class="form-control" name="email" id="ageChat" type="number" min="18" required>
+            <label class="form-label" for="emailChat">Apellido</label>
+            <input class="form-control" name="email" id="lastNameChat" required>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="messageChat">Mensaje</label>
+        <input class="form-control" name="message" id="messageChat">
+    </div>
+    <input class="btn btn-primary" type="submit" name="enviar" value="Enviar" id="chatButton">
+</form>
+
+<h3 class="display-6">Lista de mensajes</h3>
+<div id="chatBox"></div>
+
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="../js/contact.js"></script>

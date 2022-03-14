@@ -1,4 +1,4 @@
-import Contenedor from "../../classes/databaseFS.js";
+import Contenedor from "../../services/databaseFS.js";
 
 export default class ProductFileSystem extends Contenedor{
     constructor() {

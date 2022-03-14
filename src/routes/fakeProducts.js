@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mock from '../helper/mocks.js';
+import mock from '../helpers/mocks.js';
 
 const APIFakeProducts = Router();
 const fakeProduct = new mock();

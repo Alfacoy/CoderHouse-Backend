@@ -1,39 +1,24 @@
 /*=========================================*/
 /*=              AUTH USER                =*/
 /*=========================================*/
-fetch('/auth/currentUser').then(res => res.json()).then(data => {
-    const username = document.querySelector('#userNameDB');
-    const picture = document.querySelector('#picture');
-    if (data.status === 'Error') return location.replace('./pages/login.html');
-    if (data.status === 'Success') {
-        localStorage.setItem('currentUser', JSON.stringify(data))
-        username.innerHTML = data.payload.displayName || data.payload.email;
-        if (data.payload.picture) {
-            picture.setAttribute('src', `${data.payload.picture}`)
-        }
+fetch('/', {
+    headers: {
+        'Authorization': localStorage.getItem('Authorization')
     }
-})
-    
-const logoutBtn = document.querySelector('#logoutBtn');
-logoutBtn.addEventListener('click', () => {
-    fetch('/auth/logout').then(res => res.json()).then(data => {
-        console.log(data)
-        if (data.status === 'Error') return console.log(data.message)
-        location.replace('./pages/logout.html')   
-    })    
+}).then(res => res.json()).then(data => {
+    console.log(data)
+    if (data.status === 'Error') return location.replace('/login');
 })
 
 /*=========================================*/
 /*=               SOCKET                  =*/
 /*=========================================*/
 const socket = io();
-const chatButton = document.querySelector('#chatButton');
-
 // UPDATE PRODUCTS
 socket.on('updateProducts', data => {
     const listOfProducts = document.querySelector('#listOfProducts');
     const productos = data.payload;
-    fetch('templates/Productos.handlebars')
+    fetch('templates/Cards.handlebars')
         .then(res => res.text())
         .then(template => {
             const productsTemplate = Handlebars.compile(template);
@@ -43,7 +28,53 @@ socket.on('updateProducts', data => {
             const html = productsTemplate(templateObject);
             listOfProducts.innerHTML = html;
         })
-    })
+})
+
+/*=========================================*/
+/*=                 CART                  =*/
+/*=========================================*/
+function addCart(target) {
+    const cartId = localStorage.getItem('CartID')
+    const prodId = {
+        pid: target.name
+    };
+
+    fetch(`/api/cart/${cartId}/product`, {
+        method: 'POST',
+        body: JSON.stringify(prodId),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(data => {
+            if (data.status != 'Error') {
+                const storage = JSON.parse(localStorage.getItem('Cart'));
+                const title = target.parentNode.parentNode.firstElementChild.firstElementChild.textContent;
+                const price = target.parentNode.previousElementSibling.firstElementChild.children[3].textContent;
+                const stock = target.parentNode.previousElementSibling.firstElementChild.children[5].textContent;
+
+                const newProduct = {
+                    title,
+                    price,
+                    stock,
+                    id: prodId.pid
+                }
+                const newStorage = [
+                    ...storage,
+                    newProduct
+                ]
+                localStorage.setItem('Cart', JSON.stringify(newStorage))
+            } 
+        })
+}
+
+
+
+
+
+ /*
+const chatButton = document.querySelector('#chatButton');
 
 // UPDATE WEB CHAT
 socket.on('updateChat', data => {
@@ -82,67 +113,12 @@ chatButton.addEventListener('click', (event) => {
     socket.emit('webChat', objMessage);
     chatInputMessage.value = '';
 })
-
-/*=========================================*/
-/*=               PRODUCT                 =*/
-/*=========================================*/
-// Formulario agregar producto
-const formAddProduct = document.querySelector('#formAddProduct');
-formAddProduct.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const messageBox = document.querySelector('#messageBox');
-    const data = new FormData(formAddProduct);
-    const obj = {
-        title: data.get('title'),
-        price: data.get('price'),
-        thumbnail: data.get('thumbnail'),
-        description: data.get('description'),
-        stock: data.get('stock')
-    }
-    fetch('/api/productos/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(obj)
-    })
-    .then(res => res.json())
-    .then(data => { 
-        if (messageBox.firstChild) {
-            cleanRender(messageBox); 
-        }
-        if (data.error === -2) return createMessage(messageBox, 'No tienes permisos para crear un producto.')
-        createMessage(messageBox, 'Producto creado con éxito.')
-    })
-    
-    setTimeout(() => {
-        cleanRender(messageBox)
-    }, 5000);
-})
-
-/*=========================================*/
-/*=               TEMPLATES               =*/
-/*=========================================*/
-const navbarSection = document.querySelector('#navbarSection');
-fetch('/templates/Navbar.handlebars')
-    .then(res => res.text())
-    .then(template => {
-        const NavbarTemplate = Handlebars.compile(template);
-        const role = JSON.parse(localStorage.getItem('currentUser')).payload.role
-        const IsAdmin = {
-            admin: false
-        }
-        if (role === 'admin') {
-            IsAdmin.admin = true;
-        }
-        const html = NavbarTemplate(IsAdmin);
-        navbarSection.innerHTML = html;
-    })
+ */
 
 /*=========================================*/
 /*=                 UTILS                 =*/
 /*=========================================*/
-const addMessageChat = (user, date, message) => {
+/* const addMessageChat = (user, date, message) => {
     const body = document.createElement('p');
     const userSpan = document.createElement('span');
     const dateSpan = document.createElement('span');
@@ -209,4 +185,4 @@ const createMessage = (zone, message) => {
     p.innerText = message
     p.setAttribute('class', 'lead')
     zone.appendChild(p);
-}
+} */

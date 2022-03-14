@@ -1,0 +1,107 @@
+<h1 class="title">Registro de usuario</h1>
+
+<form id="registerFormUser" enctype="multipart/form-data">
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label for="nameToRegister" class="label">Nombre</label>
+                <div class="control">
+                    <input type="text" id="nameToRegister" name="nameToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="field">
+                <label for="lastNameToRegister" class="label">Apellido</label>
+                <div class="control">
+                    <input type="text" id="nameToRegister" name="lastNameToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label for="emailToRegister" class="label">Email</label>
+                <div class="control">
+                    <input type="email" id="emailToRegister" name="emailToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+       
+        <div class="column">
+            <div>
+                <div class="field">
+                    <label for="adressToRegister" class="label">Dirección de entrega</label>
+                    <div class="control">
+                        <input type="text" id="adressToRegister" name="adressToRegister" class="input" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+    
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label for="ageToRegister" class="label">Edad</label>
+                <div class="control">
+                    <input type="text" id="ageToRegister" name="ageToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="field">
+                <label for="phoneToRegister" class="label">Teléfono Móvil</label>
+                <div class="control">
+                    <input type="tel" id="phoneToRegister" name="phoneToRegister" class="input"
+                        placeholder="(Código de área) Número" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label for="avatarToRegister" class="label">Foto de perfil</label>
+                <div class="control">
+                    <input type="file" id="avatarToRegister" name="avatarToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label for="passToRegister" class="label">Contraseña</label>
+                <div class="control">
+                    <input type="password" id="passToRegister" name="passToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="field">
+                <label for="repeatPassToRegister" class="label">Repetir contraseña</label>
+                <div class="control">
+                    <input type="password" id="repeatPassToRegister" class="input" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="control">
+        <input type="submit" value="Registrarse" class="button is-primary">
+    </div>
+</form>
+
+<hr>
+
+<div class="notification is-info">
+    ¿Ya tienes cuenta? <a href="/login">Vuelve al inicio.</a>
+</div>
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="../js/register.js"></script>

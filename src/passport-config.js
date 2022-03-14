@@ -1,47 +1,27 @@
 import passport from 'passport';
-import fbStrategy from 'passport-facebook';
-import { user } from './daos/index.js';
-
-const FacebookStrategy = fbStrategy.Strategy;
-const DOMAIN = 'coderhouse-alfacoy.herokuapp.com'
-const URL = `https://${DOMAIN}/auth/facebook/callback`;
+import { Strategy, ExtractJwt } from 'passport-jwt' 
+import { User } from './daos/index.js';
+import config from './config.js';
 
 const initializePassportConfig = () => {
-    passport.use('facebook', new FacebookStrategy({
-        clientID: process.env.CLIENT_ID_FACEBOOK,
-        clientSecret: process.env.PASS_FACEBOOK,
-        callbackURL: URL,
-        profileFields: ['emails', 'picture', 'displayName']
-    }, async (accessToken, refreshToken, profile, done) => {
-        try {
-            let findUser = await user.getUserByEmail(profile.emails[0].value);
-            const newDataUser = {
-                payload: {
-                    ...findUser.payload._doc,
-                    picture: profile.photos[0].value,
-                    displayName: profile.displayName
-                }
+    console.log('holamunmdooo')
+    var opts = {}
+    opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+    opts.secretOrKey = config.jwt.secret;
+    passport.use(new Strategy(opts, function (jwt_payload, done) {
+        console.log(jwt_payload)
+        /* User.findOne({ id: jwt_payload.sub }, function (err, user) {
+            if (err) {
+                return done(err, false);
             }
-            await user.update(newDataUser.payload._id, newDataUser.payload)
-            try {
-                let facebookUser = await user.getUserByEmail(profile.emails[0].value);
-                done(null, facebookUser);
-            } catch (err) {
-                done(err);
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+                // or you could create a new account
             }
-        } catch (err) {
-            done(err);
-        }
-    }))
+        }); */
+    }));
 }
-
-passport.serializeUser((facebookUser, done) => {
-    done(null, facebookUser.payload._id);
-})
-
-passport.deserializeUser(async (id, done) => {
-    let getUser = await user.getById(id);
-    done(null, getUser)
-})
 
 export default initializePassportConfig;

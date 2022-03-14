@@ -1,0 +1,29 @@
+{{#if productos}}
+
+<section class="columns">
+    <article class="column section">
+        {{#each productos}}
+       <div class="mb-5">
+            <p><b>{{this.title}}</b></p>
+            <p>Precio: <b>{{this.price}}</b> Stock: <b>{{this.stock}}</b></p>
+            <div class="is-flex is-align-items-center">
+                <button class="button">-</button>
+                <p class="mx-5">1</p>
+                <button class="button">+</button>
+            </div>
+       </div>
+        {{/each}}
+    </article>
+    <article class="column section">
+        <div class="mb-5">
+            <p>Total en $:</p>
+            <p>Cantidad articulos:</p>
+        </div>
+        <button class="button" id="buyCart">Comprar</button>
+        <button class="button">Guardar compra</button>
+    </article>
+</section>
+
+{{else}}
+<p>No hay productos almacenados</p>
+{{/if}}

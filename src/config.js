@@ -23,6 +23,15 @@ const config = {
             "client_x509_cert_url": process.env.CLIENT_X509
         },
         baseUrl: process.env.FIREBASE_URL
+    },
+    jwt: {
+        secret: process.env.JWT_SECRET
+    },
+    gmail: {
+        password: process.env.GMAIL_PASS
+    },
+    cloudinary: {
+        API: process.env.CLOUDINARY_URL
     }
 }
 

@@ -1,9 +1,10 @@
 /*=========================================*/
 /*=             LOGOUT USER               =*/
 /*=========================================*/
-const userNameField = document.querySelector('#userName');
-const userNameData = JSON.parse(localStorage.getItem('currentUser')).payload.displayName || JSON.parse(localStorage.getItem('currentUser')).payload.email;
-userNameField.innerText = userNameData;
-setTimeout(() => {
-    location.replace('./login.html');
-}, 2000);
+fetch('/auth/logout').then(res => res.json()).then(data => {
+    localStorage.removeItem('Authorization');
+    localStorage.removeItem('CartID');
+    localStorage.removeItem('Email');
+    if (data.status === 'Success') return location.replace('/login');
+});
+

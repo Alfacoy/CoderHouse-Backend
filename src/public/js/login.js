@@ -15,7 +15,14 @@ loginForm.addEventListener('submit', (event) => {
         headers: {'Content-Type':'application/json'}
     }).then(res => res.json()).then(data => {
         if (data.status === 'Error') return console.error(data.message);
-        if(data.status === 'Success') return location.replace('../index.html');
+        if (data.status === 'Success') {            
+            const storage = localStorage.getItem('Cart');
+            localStorage.setItem('Authorization', data.token);
+            localStorage.setItem('CartID', data.cart);
+            localStorage.setItem('Email', data.email);
+            if (!storage) localStorage.setItem('Cart', JSON.stringify([]));
+            return location.replace('/');
+        }
     })
 })
 

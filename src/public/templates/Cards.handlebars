@@ -1,0 +1,33 @@
+{{#if productos}}
+
+{{#each productos}}
+<div class="column is-one-third">
+    <div class="card ">
+        <header class="card-header">
+            <p class="card-header-title">{{this.title}}</p>
+        </header>
+        <div class="card-image">
+            <figure class="image is-128x128">
+                <img src={{this.thumbnail}} alt={{this.title}} />
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="content">
+                <b>Descripción</b>
+                <p>{{this.description}}</p>
+                <b>Precio</b>
+                <p>${{this.price}}</p>
+                <b>Stock</b>
+                <p>{{this.stock}} uni</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="card-footer-item button has-background-link has-text-white" onclick="addCart(this)" name="{{this._id}}">Agregar</button>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+{{else}}
+<p>No hay productos que mostrar.</p>
+{{/if}}

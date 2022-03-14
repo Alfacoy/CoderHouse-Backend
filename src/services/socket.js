@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import  Chat  from './Chat.js';
-import { product } from '../daos/index.js';
+import { Product } from '../daos/index.js';
 
 export default class Socket {  
     constructor(conn) {
@@ -14,7 +14,7 @@ export default class Socket {
             async (socket) => {
                 console.log('Usuario conectado');
 
-                let products = await product.getAll()
+                let products = await Product.getAll()
                 socket.emit('updateProducts', products);
 
                 let messages = await this.chatDB.GetMessages();

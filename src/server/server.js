@@ -1,23 +1,21 @@
 // EXPRESS
 import express from 'express';
-import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import session from 'express-session';
 import cors from 'cors';
-import { engine } from 'express-handlebars';
+import {engine} from 'express-handlebars';
 // SOCKET
-import Socket from '../classes/socket.js';
+import Socket from '../services/socket.js';
 // UTILS
 import __dirname from '../utils.js';
-import config from '../config.js';
 import initializePassportConfig from '../passport-config.js';
 // ROUTES
-import APIProducts from '../routes/products.js'; 
-import APIFakeProducts from '../routes/fakeProducts.js';
-import APICart from '../routes/cart.js';
+import Views from '../routes/views.js';
 import APIAuth from '../routes/auth.js';
-import APIInfo from '../routes/info.js';
-import APIRandom from '../routes/random.js';
+import APIProducts from '../routes/products.js'; // REFACTORIZAR
+import APIFakeProducts from '../routes/fakeProducts.js'; // REFACTORIZAR
+import APICart from '../routes/cart.js';
+import APIInfo from '../routes/info.js'; // REFACTORIZAR
+import APIRandom from '../routes/random.js'; // REFACTORIZAR
 
 // INITIAL CONFIG
 const initialConfig = {
@@ -35,38 +33,26 @@ export default class Server {
         this.engines();
     }
 
-    // MIDDLEWARES-1
     middlewares() {
         this.app.use(express.static(`${__dirname}/public`));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
-        this.app.use(session({
-            store: MongoStore.create({mongoUrl: `${config.mongo.baseUrl}`}),
-            secret: process.env.SECRET_SESSION,
-            rolling: true,            
-            resave: true,
-            saveUninitialized: false,
-            cookie: {
-                maxAge: 100000
-            }
-        }))
-        initializePassportConfig();
         this.app.use(passport.initialize());
-        this.app.use(passport.session());
         this.app.use((req, res, next) => {
             req.io = this.socket;
             next()
         })
+        initializePassportConfig();
     }
-    
-    // ROUTES-2
+
     routes() {
-        this.app.use('/api/productos', APIProducts);
-        this.app.use('/api/productos-test', APIFakeProducts);
-        this.app.use('/api/carrito', APICart);
-        this.app.use('/api/random', APIRandom);
+        this.app.use('/', Views);
         this.app.use('/auth', APIAuth);
+        this.app.use('/api/cart', APICart);
+        this.app.use('/api/products', APIProducts);
+        this.app.use('/api/productos-test', APIFakeProducts);
+        this.app.use('/api/random', APIRandom);
         this.app.use('/info', APIInfo);
         this.app.use('/*', (req, res) => {
             res.status(400).send({
@@ -76,13 +62,14 @@ export default class Server {
         })
     }
 
-    // ENGINES-3
     engines() {
-        this.app.engine('handlebars', engine());
+        this.app.engine('handlebars', engine({
+            partialsDir: `${__dirname}/views/partials`
+        }));
         this.app.set('view engine', 'handlebars');
+        this.app.set('views', `${__dirname}/views`);
     }
     
-    // LISTENER-4
     listen() {
         this.socket;
     }

@@ -1,4 +1,4 @@
-import Contenedor from '../../classes/databaseMongo.js';
+import Contenedor from '../../services/databaseMongo.js';
 import cartSchema from '../../models/cart.js';
 import ProductMongo from '../product/productMongo.js';
 
@@ -13,7 +13,7 @@ export default class CartMongo extends Contenedor {
             if(pid.length < 24) {
                 return{status: 'Error', message: 'Debe agregar un ID válido.'};
             }
-
+            
             let isProdExist = await this.product.collection.findOne({ _id: pid });
             if(!isProdExist){
                 return{status: 'Error', message: 'El producto que quiere agregar no existe.'};

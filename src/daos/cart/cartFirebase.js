@@ -1,4 +1,4 @@
-import Contenedor from '../../classes/databaseFirebase.js';
+import Contenedor from '../../services/databaseFirebase.js';
 import productFirebase from '../product/productFirebase.js';
 
 export default class CartFirebase extends Contenedor {

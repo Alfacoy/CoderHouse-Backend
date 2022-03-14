@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { middlewareAuth } from '../helper/middlewares.js'; 
-import { product } from '../daos/index.js';
+import { middlewareAuthRole } from '../helpers/middlewares.js'; 
+import { Product } from '../daos/index.js';
 
 const APIProducts = Router();
 
@@ -10,7 +10,7 @@ const APIProducts = Router();
 
 // GET
 APIProducts.get('/', (req, res) => {
-    product.getAll().then(items => {
+    Product.getAll().then(items => {
         if (items.status === 'Error') {
             res.status(404).send(items.message);
         } else {
@@ -21,7 +21,7 @@ APIProducts.get('/', (req, res) => {
 
 APIProducts.get('/:pid', (req, res) => {
     let { pid } = req.params;
-    product.getById(pid).then(item => {
+    Product.getById(pid).then(item => {
         if (item.status === 'Error') {
             res.status(404).send(item.message);
         } else {
@@ -31,7 +31,7 @@ APIProducts.get('/:pid', (req, res) => {
 })
 
 // POST
-APIProducts.post('/', middlewareAuth ,(req, res) => {
+APIProducts.post('/', middlewareAuthRole, (req, res) => {
     let { title, description, thumbnail, price, stock } = req.body;
     const object= {
         code: `PROD-${Date.now()}`,
@@ -45,11 +45,11 @@ APIProducts.post('/', middlewareAuth ,(req, res) => {
     if (!title || !description || !thumbnail || !price || !stock) {
         res.status(404).send('No se puede guardar un producto con campos incompletos.')
     } else {
-        product.save(object).then(item => {
+        Product.save(object).then(item => {
             if (item.status === 'Error') {
                 res.status(404).send(item.message);
             } else {     
-                product.getAll().then(items => {
+                Product.getAll().then(items => {
                     if (items.status === 'Error') {
                         res.status(404).send(items.message);
                     } else {
@@ -64,7 +64,7 @@ APIProducts.post('/', middlewareAuth ,(req, res) => {
 })
 
 // PUT
-APIProducts.put('/:pid', middlewareAuth, (req, res) => {
+APIProducts.put('/:pid', middlewareAuthRole, (req, res) => {
     let { pid } = req.params;
     let { title, description, thumbnail, price, stock } = req.body;
     const obj = {
@@ -78,7 +78,7 @@ APIProducts.put('/:pid', middlewareAuth, (req, res) => {
     if (!title || !description || !thumbnail || !price || !stock) {
         res.status(404).send('No se puede guardar un producto con campos incompletos.')
     } else {
-        product.update(pid, obj).then(item => {
+        Product.update(pid, obj).then(item => {
             if (item.status === 'Error') {
                 res.status(404).send(item.message);
             } else {
@@ -89,9 +89,9 @@ APIProducts.put('/:pid', middlewareAuth, (req, res) => {
 })
 
 // DELETE
-APIProducts.delete('/:pid', middlewareAuth, (req, res) => {
+APIProducts.delete('/:pid', middlewareAuthRole, (req, res) => {
     let { pid } = req.params;
-    product.deleteById(pid)
+    Product.deleteById(pid)
         .then(item => {
             console.log(item)
         if (item.status === 'Error') {

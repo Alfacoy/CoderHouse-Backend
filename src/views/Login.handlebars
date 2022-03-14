@@ -1,0 +1,33 @@
+<h1 class="title">Login de usuario</h1>
+<form id="loginFormUser">
+    <div class="field">
+        <label for="emailToLog" class="label">Email</label>
+        <div class="control">
+            <input type="email" id="emailToLog" name="emailToLog" class="input" required>
+        </div>
+    </div>
+    <div class="field">
+        <label for="passToLogin" class="label">Contraseña</label>
+        <div class="control">
+            <input type="password" id="passToLogin" name="passToLogin" class="input" required>
+        </div>
+    </div>
+    <div class="control">
+        <input type="submit" value="Ingresar" class="button is-primary">
+    </div>
+</form>
+
+<hr>
+
+<h3 class="title">Logearse con redes sociales</h3>
+
+<button id="facebookLogin" class="button is-primary">Logearse con Facebook</button>
+
+<hr>
+
+<div class="notification is-info">
+    ¿No tienes cuenta? <a href="/register">¡Registrate!</a>
+</div>
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="./js/login.js"></script>

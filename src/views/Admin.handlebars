@@ -1,0 +1,50 @@
+<h1 class="title">Admin Dashboard</h1>
+
+<hr>
+
+<h3 class="title">Formulario de carga</h1>
+<form id='formAddProduct'>
+    <div class="field">
+        <label for="title" class="label">Título</label>
+        <div class="control">
+            <input name="title" class="input">
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="description" class="label">Descripción</label>
+        <div class="control">
+            <input name="description" class="input">
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="price" class="label">Precio</label>
+        <div class="control">
+            <input type="number" name="price" class="input">
+        </div>
+    </div>
+
+    <div class="field"> 
+        <label for="thumbnail" class="label">Foto URL</label>
+        <div class="control">
+            <input name="thumbnail" class="input">
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="stock" class="label">Stock</label>
+        <div class="control">
+            <input type="number" name="stock" class="input">
+        </div>
+    </div>
+
+   <div class="control">
+        <input class="button is-success" type="submit" value="Enviar">
+   </div>
+</form>
+
+<div id="messageBox"></div>
+
+<!--SCRIPTS-->
+<script type="text/javascript" src="../js/admin.js"></script>
