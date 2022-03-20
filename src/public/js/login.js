@@ -14,12 +14,12 @@ loginForm.addEventListener('submit', (event) => {
         body: JSON.stringify(userToLogin),
         headers: {'Content-Type':'application/json'}
     }).then(res => res.json()).then(data => {
+        console.log(data)
         if (data.status === 'Error') return console.error(data.message);
         if (data.status === 'Success') {            
             const storage = localStorage.getItem('Cart');
-            localStorage.setItem('Authorization', data.token);
-            localStorage.setItem('CartID', data.cart);
-            localStorage.setItem('Email', data.email);
+            localStorage.setItem('CartID', data.payload.cart);
+            localStorage.setItem('Authorization',data.payload.token);
             if (!storage) localStorage.setItem('Cart', JSON.stringify([]));
             return location.replace('/');
         }

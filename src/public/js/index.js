@@ -1,16 +1,4 @@
 /*=========================================*/
-/*=              AUTH USER                =*/
-/*=========================================*/
-fetch('/', {
-    headers: {
-        'Authorization': localStorage.getItem('Authorization')
-    }
-}).then(res => res.json()).then(data => {
-    console.log(data)
-    if (data.status === 'Error') return location.replace('/login');
-})
-
-/*=========================================*/
 /*=               SOCKET                  =*/
 /*=========================================*/
 const socket = io();

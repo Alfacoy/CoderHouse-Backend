@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { login, register, currentUser, logout, info } from '../controllers/auth.js';
+import {passportCall} from "../helpers/middlewares.js";
+import { login, register, currentUser, logout } from '../controllers/auth.js';
 import upload from '../helpers/upload.js';
+
 
 const APIAuth = Router();
 
@@ -26,10 +28,16 @@ APIAuth.get('/facebook/callback', passport.authenticate('facebook', {
 /*=========================================*/
 /*=               MY AUTH                 =*/
 /*=========================================*/
-APIAuth.post('/register', upload.single('avatarToRegister'), register);
-APIAuth.post('/login', login);
+APIAuth.post('/register',
+    passportCall('register'),
+    register);
+APIAuth.post('/login',
+    passportCall('login'),
+    login);
 APIAuth.get('/currentUser', currentUser);
 APIAuth.get('/logout', logout);
-APIAuth.get('/info', info)
 
 export default APIAuth;
+
+
+/*upload.single('avatarToRegister')*/

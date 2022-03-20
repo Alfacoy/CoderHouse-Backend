@@ -2,6 +2,7 @@
 import express from 'express';
 import passport from 'passport';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import {engine} from 'express-handlebars';
 // SOCKET
 import Socket from '../services/socket.js';
@@ -38,12 +39,13 @@ export default class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
+        this.app.use(cookieParser())
+        initializePassportConfig();
         this.app.use(passport.initialize());
         this.app.use((req, res, next) => {
             req.io = this.socket;
             next()
         })
-        initializePassportConfig();
     }
 
     routes() {

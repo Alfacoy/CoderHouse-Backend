@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import passport from 'passport';
 import { Login, Home, Register, Cart, Profile, Admin, Contact, Logout } from '../controllers/views.js';
+import { passportCall} from "../helpers/middlewares.js";
 
 const Views = Router();
 
-Views.get('/', Home);
+Views.get('/', passportCall('jwt'),Home);
 Views.get('/login', Login);
 Views.get('/logout', Logout);
 Views.get('/register', Register)
-Views.get('/contacto', Contact);
-Views.get('/carrito', passport.authenticate('jwt', { session: false }), Cart);
-Views.get('/perfil', Profile);
-Views.get('/admin', Admin);
+Views.get('/contacto', passportCall('jwt'), Contact);
+Views.get('/carrito', passportCall('jwt'), Cart);
+Views.get('/perfil', passportCall('jwt'), Profile);
+Views.get('/admin', passportCall('jwt'), Admin);
 
 export default Views;

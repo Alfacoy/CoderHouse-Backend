@@ -35,8 +35,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     picture: {
-        type: String,
-        required: true
+        type: String
     },
     cart: {
         type: mongoose.Schema.Types.ObjectId,

@@ -1,4 +1,5 @@
 import { request, response } from 'express';
+import passport from "passport";
 import { User } from '../daos/index.js';
 import { verifyWebToken } from '../helpers/jwt.js';
 
@@ -19,6 +20,21 @@ const middlewareAuthRole = async (req = request, res = response, next) => {
     }
 }
 
+const passportCall = (strategy) =>{
+    return async(req, res, next) =>{
+        passport.authenticate(strategy, (err, user, info) => {
+            if (err) return next(err);
+            if (!user) {
+                console.log({error:info.message?info.message:info.toString()})
+                return res.redirect('/login')
+            }
+            req.user = user;
+            next();
+        })(req, res, next);
+    }
+}
+
 export {
-    middlewareAuthRole
+    middlewareAuthRole,
+    passportCall
 }

@@ -6,16 +6,15 @@
             <div class="field">
                 <label for="name" class="label">Nombre</label>
                 <div class="control">
-                    <input name="name" type="text" class="input">
+                    <input name="name" type="text" class="input" value={{this.first_name}} disabled>
                 </div>
             </div>
         </div>
-        
         <div class="column is-half">
             <div class="field">
-                <label for="age" class="label">Edad</label>
+                <label for="name" class="label">Apellido</label>
                 <div class="control">
-                    <input name="age" type="number" class="input">
+                    <input name="name" type="text" class="input" value={{this.last_name}} disabled>
                 </div>
             </div>
         </div>
@@ -26,7 +25,7 @@
             <div class="field">
                 <label for="email" class="label">Email</label>
                 <div class="control">
-                    <input name="email" type="email" class="input">
+                    <input name="email" type="email" class="input" value={{this.email}}>
                 </div>
             </div>
             <div class="field">
@@ -38,6 +37,14 @@
                 </div>
             </div>
         </div>
+        <div class="column">
+            <div class="field">
+                <label for="age" class="label">Edad</label>
+                <div class="control">
+                    <input name="age" type="number" class="input" value={{this.age}} disabled>
+                </div>
+            </div>
+        </div>
     </div>
       
     <div class="columns">
@@ -45,7 +52,7 @@
             <div class="field">
                 <label for="adress" class="label">Dirección</label>
                 <div class="control">
-                    <input name="adress" type="text" class="input">
+                    <input name="adress" type="text" class="input" value="{{this.adress}}">
                 </div>
             </div>
         </div>
@@ -53,7 +60,7 @@
             <div class="field">
                 <label for="hone" class="label">Teléfono Móvil</label>
                 <div class="control">
-                    <input name="phone" type="tel" class="input">
+                    <input name="phone" type="tel" class="input" value={{this.phone}}>
                 </div>
             </div>
         </div>
