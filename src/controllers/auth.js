@@ -28,7 +28,16 @@ const register = async (req = request, res = response) => {
     const token = await webToken(req.user.id);
 
     //ENVIAR EMAIL AL ADMINISTRADOR
-    await sendEmail()
+    await sendEmail(
+        'Nuevo Registro',
+        `
+        <p><b>Datos de nuevo usuario:</b></p>
+        <h3>${req.user.fullName} [${req.user.age}]</h3>
+        <p>Email: ${req.user.email}</p>
+        <p>Dirección: ${req.user.adress}</p>
+        <p>Teléfono: ${req.user.phone}</p>
+       `
+    )
 
     res.cookie('JWT-COOKIE', token.payload.token, {
         httpOnly: true

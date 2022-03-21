@@ -46,7 +46,7 @@ const initializePassportConfig = () => {
 
             const newUser = await User.save(data)
 
-            return done(null, {id: newUser.id, cart: data.cart})
+            return done(null, {id: newUser.id, cart: data.cart, fullName: `${first_name} ${last_name}`, email: data.email, adress: data.adress, age: data.age, phone: data.phone})
         } catch (error) {
             done(error)
         }

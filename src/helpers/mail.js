@@ -1,7 +1,7 @@
 import { createTransport } from 'nodemailer';
 import config from '../config.js';
 
-const sendEmail = async (to) => {
+const sendEmail = async (subject,html) => {
     const trasporter = createTransport({
         service: "gmail",
         port: 587,
@@ -15,8 +15,8 @@ const sendEmail = async (to) => {
     const mailOptions = {
         from: "Servidor Node",
         to: "ninanbudevelop@gmail.com",
-        subject: 'Mail de prueba',
-        html: `<h1>Hola Mundo</h1>`
+        subject: subject,
+        html: html
     }
 
     try {
