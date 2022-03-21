@@ -2,6 +2,7 @@ import { request, response } from 'express';
 import cloudinary from 'cloudinary'
 import { webToken } from '../helpers/jwt.js';
 import { sendEmail } from '../helpers/mail.js';
+import {errorLogger} from "../helpers/logger.js";
 import config from '../config.js'
 
 const imageStorage = cloudinary.v2
@@ -68,6 +69,7 @@ const currentUser = async (req = request, res = response) => {
         }
         return res.status(200).send({status:'Success', payload: data })
     } catch (error) {
+        errorLogger.error(error);
         res.status(401).send({ status: 'Error', message: 'Hubo un error al tratar de registrar un usuario.' })
     }
 }
@@ -77,6 +79,7 @@ const logout = (req = request, res = response) => {
         res.clearCookie('JWT-COOKIE');
         res.status(200).send({ status: 'Success', message: 'Usuario deslogeado con éxito.' })
     } catch (error) {
+        errorLogger.error(error);
         res.status(404).send({ status: 'Error', message: 'No hay usuario que deslogear.' })
     }
 }

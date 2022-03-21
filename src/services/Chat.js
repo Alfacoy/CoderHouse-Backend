@@ -2,6 +2,7 @@ import mongoose  from 'mongoose';
 import { normalize, schema, denormalize } from 'normalizr';
 import config from "../config.js";
 import chatSchema from "../models/chat.js";
+import {errorLogger} from "../helpers/logger.js";
 
 mongoose.connect(config.mongo.baseUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -15,6 +16,7 @@ class Chat {
             const messages = await this.collection.find();
             return { status: 'success', payload: messages };
         } catch (err) {
+            errorLogger.error(err);
             return { status: 'error', message: err }
         }
     }
@@ -28,6 +30,7 @@ class Chat {
                 return { status: 'err', message: `El mensaje con id: ${id} no existe.` }
             }
         } catch (err) {
+            errorLogger.error(err);
             return { status: 'error', message: err };
         }
     }
@@ -47,6 +50,7 @@ class Chat {
             })
             return { status: 'success', payload: message._id }
         } catch (err) {
+            errorLogger.error(err);
             return { status: 'error', message: err }
         }
     } 

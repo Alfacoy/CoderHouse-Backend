@@ -1,6 +1,5 @@
 import fs from 'fs';
 import config from '../config.js';
-
 import { messageDefaultContenedor } from '../helpers/statusMessage.js';//BORRAR
 
 export default class Contenedor {

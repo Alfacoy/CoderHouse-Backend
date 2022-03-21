@@ -1,15 +1,15 @@
 import __dirname  from './utils.js';
 import dotenv from 'dotenv';
-dotenv.config()
+dotenv.config();
 
 const config = {
     fileSystem: {
-        baseUrl: `${__dirname}/files/`
+        baseUrl: `${__dirname}/files/`//Borrar
     },
     mongo: {
         baseUrl: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_DB}.zg59x.mongodb.net`
     },
-    firebase: {
+    firebase: {//Borrar
         serviceAccount: {
             "type": process.env.TYPE,
             "project_id": process.env.PROJECT_ID,

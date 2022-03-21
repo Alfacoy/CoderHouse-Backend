@@ -1,6 +1,4 @@
-/*
-    ASEGURARSE DE QUE TODAS LAS PASSWORD SEAN STRINGS.
-*/
+/* ASEGURARSE DE QUE TODAS LAS PASSWORD SEAN STRINGS.*/
 import bcrypt from 'bcrypt';
 
 const hashPass = async (password,salt = 8) => {

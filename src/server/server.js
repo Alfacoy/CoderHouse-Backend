@@ -12,11 +12,11 @@ import initializePassportConfig from '../passport-config.js';
 // ROUTES
 import Views from '../routes/views.js';
 import APIAuth from '../routes/auth.js';
-import APIProducts from '../routes/products.js'; // REFACTORIZAR
-import APIFakeProducts from '../routes/fakeProducts.js'; // REFACTORIZAR
+import APIProducts from '../routes/products.js';
 import APICart from '../routes/cart.js';
-import APIInfo from '../routes/info.js'; // REFACTORIZAR
-import APIRandom from '../routes/random.js'; // REFACTORIZAR
+import APIFakeProducts from '../routes/fakeProducts.js'; // ELIMINAR
+import APIInfo from '../routes/info.js'; // ELIMINAR
+import APIRandom from '../routes/random.js'; // ELIMINAR
 
 // INITIAL CONFIG
 const initialConfig = {

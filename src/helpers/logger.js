@@ -1,4 +1,5 @@
 import { createLogger, format, transports } from 'winston';
+import __dirname from "../utils.js";
 
 const { combine, timestamp, prettyPrint, simple } = format;
 
@@ -14,7 +15,7 @@ const errorLogger = createLogger({
     level: 'error',
     transports: [
         new transports.File({
-            filename: './logs/error.log',
+            filename: `${__dirname}/logs/error.log`,
             level: 'error'
         })
     ]
@@ -25,7 +26,7 @@ const warnLogger = createLogger({
     level: 'warn',
     transports: [
         new transports.File({
-            filename: './logs/warn.log',
+            filename: `${__dirname}/logs/warn.log`,
             level: 'warn',
         })
     ]

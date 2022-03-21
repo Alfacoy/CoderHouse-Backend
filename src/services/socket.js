@@ -1,8 +1,9 @@
 import { Server } from 'socket.io';
 import  Chat  from './Chat.js';
 import { Product } from '../daos/index.js';
+import {errorLogger, logger} from "../helpers/logger.js";
 
-export default class Socket {  
+export default class Socket {
     constructor(conn) {
         this.io = new Server(conn);
         this.chatDB = new Chat();
@@ -12,7 +13,7 @@ export default class Socket {
     on() {
         this.io.on('connection',
             async (socket) => {
-                console.log('Usuario conectado');
+                logger.info('Usuario conectado');
 
                 let products = await Product.getAll()
                 socket.emit('updateProducts', products);
@@ -30,14 +31,13 @@ export default class Socket {
                             });
                         }
                     } catch (err) {
-                        console.log(err);
-                        console.log('Error al guardar los mensajes.')
+                        errorLogger.error('Error al guardar mensajes de socket: ' + err);
                     }
                 })
 
                 // Disconnect
                 socket.on('disconnect', () => {
-                    console.log(`Un usuario se ha desconectado`)
+                    logger.info(`Un usuario se ha desconectado`)
                 })
             })
     }

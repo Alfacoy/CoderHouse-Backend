@@ -1,6 +1,7 @@
 import Contenedor from '../../services/databaseMongo.js';
 import cartSchema from '../../models/cart.js';
 import ProductMongo from '../product/productMongo.js';
+import {errorLogger} from "../../helpers/logger.js";
 
 export default class CartMongo extends Contenedor {
     constructor() {
@@ -27,6 +28,7 @@ export default class CartMongo extends Contenedor {
             await this.collection.updateOne({ _id: id }, { $push: { productos: pid } });
             return { status: 'Success', message: 'Se agrego un producto al carrito.' };
         } catch (err) {
+            errorLogger.error(err);
             return { status: 'Error', message: `Hubo un error: ${err}` };
         }
     }
@@ -50,6 +52,7 @@ export default class CartMongo extends Contenedor {
             await this.collection.updateOne({ _id: id }, { $pull: { productos: pid } }); 
             return { status: 'Success', message: 'Se elimino un producto al carrito.' };
         } catch (err) {
+            errorLogger.error(err);
             return { status: 'Error', message: `Hubo un error: ${err}` };
         }
     }

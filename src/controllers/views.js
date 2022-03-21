@@ -5,7 +5,6 @@ const Home = async (req = request, res = response) => {
     if(req.user.role === 'admin') render.isAdmin = true
     if(req.user) render.isConnected = true
 
-
     res.render('Home', {
         head_title: 'Ecommerce',
         isAdmin: render.isAdmin,
@@ -53,7 +52,7 @@ const Cart = (req = request, res = response) => {
     const render = {isAdmin: false,isConnected: false}
     if(req.user.role === 'admin') render.isAdmin = true
     if(req.user) render.isConnected = true
-    console.log(req.user)
+
     res.render('Cart', {
         head_title: 'Carrito',
         isAdmin: render.isAdmin,
