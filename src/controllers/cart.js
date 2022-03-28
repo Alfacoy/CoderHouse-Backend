@@ -1,6 +1,7 @@
 import { request, response } from 'express';
-import { Cart } from '../daos/index.js';
-
+import { Cart, Product } from '../daos/index.js';
+import {sendEmail} from "../helpers/mail.js";
+import {sendMessageToSMS, sendMessageToWS} from "../helpers/twilio.js";
 
 const showCart = (req = request, res = response) => {
     // Muestra todos los productos de un carrito
@@ -74,10 +75,43 @@ const deleteProductCart = (req = request, res = response) => {
     })
 }
 
+const buyCart = async (req = request, res = response) => {
+    const {cid} = req.params;
+    const {email,fullName,phone} = req.body
+    let list = ``;
+    let body = `<ul>${list}</ul>`;
+
+    if(!email || !fullName) return res.status(404).send({status: 'Error', message: 'Faltan datos para realizar la compra.'})
+
+    try{
+        const productsInCart = await Cart.getById (cid);
+
+        if(!productsInCart.payload) return res.status(404).send({status: 'Error', message: 'No hay productos en el carro para comprar.'})
+        const products = productsInCart.payload.productos;
+        for(let i = 0; i < products.length; i++){
+            let detail = await Product.getById(products[i]).then(prod => `${prod.payload.title}: $${prod.payload.price}`)
+            list += `<li>${detail}</li>`
+        }
+
+        body =  `
+            <p>Se realizó la siguiente compra en tu tienda:</p>
+            <ul>${list}</ul>
+            `
+
+        await sendEmail(`Nuevo pedido de ${fullName} - ${email}.`, body);
+        /*await sendMessageToWS(`Nuevo pedido de ${fullName} - ${email}.`)*/
+        await sendMessageToSMS('Su pedido se encuentra en proceso');
+        return res.send({status: 'Success', message: 'Se realizo la compra de manera correcta.'});
+    } catch (error) {
+        return res.status(400).send({status: 'Error', message: error})
+    }
+}
+
 export {
     showCart,
     createCart,
     addToCart,
+    buyCart,
     deleteCart,
     deleteProductCart
 }

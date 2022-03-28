@@ -1,6 +1,6 @@
 <h1 class="title">Perfil de usuario</h1>
 
-<form>
+<form id='formUpdateProfile'>
     <div class="columns">
         <div class="column is-half">
             <div class="field">
@@ -74,7 +74,16 @@
                     <input name="avatar" type="file" class="input">
                 </div>
             </div>
+            <p id="isCorrect"></p>
         </div>
+    </div>
+
+    <div class="columns">
+       <div class="column">
+           <div class="control">
+               <input type="submit" value="Actualizar" class="button is-primary">
+           </div>
+       </div>
     </div>
   
 </form>

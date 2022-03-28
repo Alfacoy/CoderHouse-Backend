@@ -1,13 +1,8 @@
 import { request, response } from 'express';
-import cloudinary from 'cloudinary'
 import { webToken } from '../helpers/jwt.js';
 import { sendEmail } from '../helpers/mail.js';
+import {sendMessageToWS} from "../helpers/twilio.js";
 import {errorLogger} from "../helpers/logger.js";
-import config from '../config.js'
-
-const imageStorage = cloudinary.v2
-imageStorage.config(config.cloudinary.API)
-
 
 const login = async (req = request, res = response) => {
     const token = await webToken(req.user.id);
@@ -39,6 +34,7 @@ const register = async (req = request, res = response) => {
         <p>Teléfono: ${req.user.phone}</p>
        `
     )
+    await sendMessageToWS();
 
     res.cookie('JWT-COOKIE', token.payload.token, {
         httpOnly: true

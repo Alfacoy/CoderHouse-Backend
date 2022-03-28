@@ -2,6 +2,7 @@ import passport from 'passport';
 import local from 'passport-local';
 import { Strategy, ExtractJwt } from 'passport-jwt' 
 import {Cart, User} from './daos/index.js';
+import { createCart} from "./controllers/cart.js";
 import {cookieExtractor} from "./helpers/cookieExtractor.js";
 import {compareHash, hashPass} from "./helpers/bcrypt.js";
 import {errorLogger, warnLogger} from "./helpers/logger.js";
@@ -12,7 +13,6 @@ const LocalStrategy = local.Strategy;
 const initializePassportConfig = () => {
     passport.use('register', new LocalStrategy({passReqToCallback:true, usernameField: "email",session:false}, async(req,email,password,done)=>{
         const { first_name, last_name, adress, age, phone } = req.body;
-        //const picture = req.file;
         try {
            if (!email || !phone|| !first_name || !last_name || !adress || !age || !password){
                warnLogger.warn('Datos insuficientes a la hora de registrarse.')
@@ -32,10 +32,6 @@ const initializePassportConfig = () => {
 
             //CREAR NOMBRE DE USUARIO
             const username = `${first_name.slice(0, 3)}${last_name.slice(0, 3)}${Math.round(Math.random() * 100)}`;
-
-            //SUBIR IMÁGEN A CLOUDINARY
-            //const { path } = picture
-            //const avatar = await imageStorage.uploader.upload(path)
 
             const data = {
                 first_name,
@@ -102,6 +98,7 @@ const initializePassportConfig = () => {
                phone: data.payload.phone,
                role: data.payload.role,
                username: data.payload.username,
+               picture: data.payload.picture || "https://res.cloudinary.com/alfacoy18/image/upload/v1648428754/fy3adqs3dz2x3jlyhwky.jpg",
                cart: data.payload.cart
            };
            return done(null, result, {status: 'Success', message:'Usuario encontrado.'});

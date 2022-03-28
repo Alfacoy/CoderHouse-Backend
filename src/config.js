@@ -32,6 +32,10 @@ const config = {
     },
     cloudinary: {
         API: process.env.CLOUDINARY_URL
+    },
+    twilio: {
+        ID: process.env.ACCOUNT_SID_TWILIO,
+        TOKEN: process.env.AUTH_TOKEN_TWILIO
     }
 }
 

@@ -1,15 +1,4 @@
 /*=========================================*/
-/*=              AUTH USER                =*/
-/*=========================================*/
-/*fetch('/auth/currentUser', {
-    headers: {
-        'Authorization': localStorage.getItem('Authorization'),
-    }
-}).then(res => res.json()).then(data => {
-    if (data.status === 'Error') return location.replace('/login');
-})*/
-
-/*=========================================*/
 /*=               PRODUCT                 =*/
 /*=========================================*/
 // Formulario agregar producto

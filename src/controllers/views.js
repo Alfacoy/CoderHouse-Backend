@@ -60,7 +60,8 @@ const Cart = (req = request, res = response) => {
         fullName: `${req.user.first_name} ${req.user.last_name}`,
         adress: req.user.adress,
         email: req.user.email,
-        phone: req.user.phone
+        phone: req.user.phone,
+        picture: req.user.picture
     })
 }
 

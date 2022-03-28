@@ -5,12 +5,12 @@
     <article>
         <h3 class="title">Datos para envío</h3>
         <div class="is-flex">
-            <img src="https://res.cloudinary.com/alfacoy18/image/upload/v1647186211/ymemxz4okbwe1hkfqlje.jpg" alt="imagen de perfil" class="image is-128x128">
+            <img src="{{ this.picture }}" alt="imagen de perfil" class="image is-128x128" id="avatar">
             <ul class="ml-5">
-                <li>Nombre y apellido: {{this.fullName}}</li>
+                <li>Nombre y apellido: <span id="fullName">{{this.fullName}}</span></li>
                 <li>Dirección: {{this.adress}}</li>
-                <li>Teléfono: {{this.phone}}</li>
-                <li>Email: {{this.email}}</li>
+                <li>Teléfono: <span id="phone">{{this.phone}}</span></li>
+                <li>Email: <span id="email">{{this.email}}</span></li>
             </ul>
         </div>
     </article>
