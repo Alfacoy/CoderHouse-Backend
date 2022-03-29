@@ -104,7 +104,7 @@ const buyCart = async (req = request, res = response) => {
             `
 
         await sendEmail(`Nuevo pedido de ${fullName} - ${email}.`, body);
-        /*await sendMessageToWS(`Nuevo pedido de ${fullName} - ${email}.`)*/
+        await sendMessageToWS(`Nuevo pedido de ${fullName} - ${email}.`)
         await sendMessageToSMS('Su pedido se encuentra en proceso');
         return res.send({status: 'Success', message: 'Se realizo la compra de manera correcta.'});
     } catch (error) {

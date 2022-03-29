@@ -15,7 +15,6 @@ const sendMessageToWS = async (html) => {
     }
     try{
         const message= await client.messages.create(option);
-        console.log('WS')
         logger.info(message)
     } catch (error) {
         errorLogger.error(error)
@@ -23,15 +22,13 @@ const sendMessageToWS = async (html) => {
 }
 
 const sendMessageToSMS = async (html,to) => {
-    console.log('SMS HOLA')
     const option = {
         body: html,
-        /*to:'+5491132060512'*/
-        to: '+17629999105'
+        from: '+17629999105',
+        to:'+541132060512'
     }
     try{
         const message= await client.messages.create(option);
-        console.log('SMS')
         logger.info(message)
     } catch (error) {
         errorLogger.error(error)
