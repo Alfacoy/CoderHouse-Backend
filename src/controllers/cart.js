@@ -89,8 +89,13 @@ const buyCart = async (req = request, res = response) => {
         if(!productsInCart.payload) return res.status(404).send({status: 'Error', message: 'No hay productos en el carro para comprar.'})
         const products = productsInCart.payload.productos;
         for(let i = 0; i < products.length; i++){
-            let detail = await Product.getById(products[i]).then(prod => `${prod.payload.title}: $${prod.payload.price}`)
-            list += `<li>${detail}</li>`
+            try{
+                let detail = await Product.getById(products[i]).then(prod => `${prod.payload.title}: $${prod.payload.price}`)
+                list += `<li>${detail}</li>`
+                await Cart.removeFromCart(cid,products[i])
+            } catch (error){
+                return res.status(400).send({status: 'Error', message: error})
+            }
         }
 
         body =  `

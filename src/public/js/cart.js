@@ -43,7 +43,11 @@ fetch('templates/cartList.handlebars')
                 headers: {'Content-Type':'application/json'}
             })
                 .then(res => res.json())
-                .then(data => console.log(data.message))
+                .then(data => {
+                    localStorage.setItem('Cart',JSON.stringify([]));
+                    alert(data.message)
+                    location.replace('/')
+                })
         })
     })
 

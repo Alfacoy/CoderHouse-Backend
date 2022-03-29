@@ -85,7 +85,11 @@ const Contact = (req = request, res = response) => {
     res.render('Contact', {
         head_title: 'Contacto',
         isAdmin: render.isAdmin,
-        isConnected: render.isConnected
+        isConnected: render.isConnected,
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email
     })
 }
 
