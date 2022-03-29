@@ -14,7 +14,7 @@ formAddProduct.addEventListener('submit', (event) => {
         description: data.get('description'),
         stock: data.get('stock')
     }
-    fetch('/api/productos/', {
+    fetch('/api/products/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -29,6 +29,7 @@ formAddProduct.addEventListener('submit', (event) => {
             }
             if (data.error === -2) return createMessage(messageBox, 'No tienes permisos para crear un producto.')
             createMessage(messageBox, 'Producto creado con éxito.')
+            location.replace('/admin');
         })
 
     setTimeout(() => {
