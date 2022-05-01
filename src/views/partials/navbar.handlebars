@@ -8,7 +8,10 @@
         {{#if isAdmin}}
         <li class="navbar-item"><a href="/admin">Mi Dashboard</a></li>
         {{/if}}
-        <li class="navbar-item"><a href="/contacto">Contacto</a></li>
+        {{#if isConnected}}
+            <li class="navbar-item"><a href="/contacto">Contacto</a></li>
+        {{/if}}
+
         {{#if isConnected}}
         <li class="navbar-item"><a href="/logout">Salir</a></li>
         {{/if}}

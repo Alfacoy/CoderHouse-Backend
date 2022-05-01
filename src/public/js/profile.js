@@ -13,6 +13,8 @@ formUpdateProfile.addEventListener('submit', (event) => {
     })
         .then(res=> res.json())
         .then(data => {
+            const avatar = document.getElementsByName('avatar');
+            avatar[0].value = ''
             isCorrect.textContent = data.message
         })
 })

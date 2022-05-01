@@ -88,6 +88,7 @@ const buyCart = async (req = request, res = response) => {
 
         if(!productsInCart.payload) return res.status(404).send({status: 'Error', message: 'No hay productos en el carro para comprar.'})
         const products = productsInCart.payload.productos;
+        let totalPrice = 0;
         for(let i = 0; i < products.length; i++){
             try{
                 let detail = await Product.getById(products[i]).then(prod => `${prod.payload.title}: $${prod.payload.price}`)
@@ -101,6 +102,7 @@ const buyCart = async (req = request, res = response) => {
         body =  `
             <p>Se realizó la siguiente compra en tu tienda:</p>
             <ul>${list}</ul>
+            <p>Total: ${totalPrice}</p>
             `
 
         await sendEmail(`Nuevo pedido de ${fullName} - ${email}.`, body);

@@ -36,18 +36,21 @@ fetch('templates/cartList.handlebars')
                 fullName,
                 phone
             }
-            const cartID = localStorage.getItem('CartID');
-            fetch(`api/cart/${cartID}/buy`,{
-                method: "POST",
-                body: JSON.stringify(obj),
-                headers: {'Content-Type':'application/json'}
-            })
-                .then(res => res.json())
-                .then(data => {
-                    localStorage.setItem('Cart',JSON.stringify([]));
-                    alert(data.message)
-                    location.replace('/')
+            let itsOkey = confirm("¿Quieres realizar está compra?");
+            if (itsOkey){
+                const cartID = localStorage.getItem('CartID');
+                fetch(`api/cart/${cartID}/buy`,{
+                    method: "POST",
+                    body: JSON.stringify(obj),
+                    headers: {'Content-Type':'application/json'}
                 })
+                    .then(res => res.json())
+                    .then(data => {
+                        localStorage.setItem('Cart',JSON.stringify([]));
+                        alert(data.message)
+                        location.replace('/')
+                    })
+            }
         })
     })
 

@@ -1,0 +1,10 @@
+{{#each productos}}
+<tr>
+    <th class="has-text-centered">{{@index}}</th>
+    <td class="has-text-centered"><a href="/api/products/{{this._id}}">{{this.title}}</a></td>
+    <td class="has-text-centered">{{this.stock}}</td>
+    <td class="has-text-centered">${{this.price}}</td>
+    <td class="has-text-centered"><a href="#"><img src="asset/pencil.png" /></a></td>
+    <td class="has-text-centered"><button onclick="click()"><img src="asset/bucket.png" alt="{{this._id}}"/></button></td>
+</tr>
+{{/each}}

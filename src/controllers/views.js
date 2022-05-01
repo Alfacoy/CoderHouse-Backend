@@ -44,7 +44,8 @@ const Profile = (req = request, res = response) => {
         email: req.user.email,
         adress: req.user.adress,
         phone: req.user.phone,
-        age: req.user.age
+        age: req.user.age,
+        picture: req.user.picture
     })
 }
 

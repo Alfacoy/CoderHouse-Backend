@@ -9,6 +9,7 @@ socket.on('updateProducts', data => {
     fetch('templates/Cards.handlebars')
         .then(res => res.text())
         .then(template => {
+            console.log(template)
             const productsTemplate = Handlebars.compile(template);
             const templateObject = {
                 productos: productos

@@ -33,9 +33,36 @@ formAddProduct.addEventListener('submit', (event) => {
         })
 
     setTimeout(() => {
-        cleanRender(messageBox)
+        cleanRender(messageBox);
     }, 5000);
 })
+
+
+const listOfProductsDashboard = document.querySelector('#listOfProductsDashboard');
+fetch('templates/productsList.handlebars')
+    .then(res => res.text())
+    .then(template => {
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(data => {
+                if(!data) return console.log('No hay productos guardados.')
+                const productsTemplate = Handlebars.compile(template);
+                const templateObject = {
+                    productos: data
+                }
+                listOfProductsDashboard.innerHTML = productsTemplate(templateObject);
+            })
+            .catch(error => console.log(error))
+
+    })
+    .catch(error => console.log(error))
+
+
+
+function click (e) {
+    e.preventDefault()
+    console.log(e.target)
+}
 
 const cleanRender = (zone) => {
     while (zone.firstChild) {
